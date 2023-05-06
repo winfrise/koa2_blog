@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>后台管理中心</title>
+    <% include public/head %>
+</head>
+
+<body>
+
+    <div class="layui-layout layui-layout-admin">
+        <div class="layui-header header">
+            <div class="layui-main">
+                <a class="logo" href="/admin/index/index.html" target="_self">
+                    <img src="/static/images/logo-top.png" alt="">
+                </a>
+                <div class="top_admin_user">
+                    <a href="/" target="_blank">网站首页</a> |
+                    <a class="update_cache" href="javascript:void(0)">更新缓存</a> |
+                    <a class="logout_btn" href="javascript:void(0)">退出</a>
+                </div>
+            </div>
+        </div>
+        <div class="layui-side layui-bg-black">
+            <div class="layui-side-scroll">
+                <ul class="layui-nav layui-nav-tree" lay-filter="test">
+                    <!--<li class="layui-nav-item layui-nav-itemed">-->
+                    <li class="layui-nav-item">
+                        <a href="javascript:void(0);">首页</a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="javascript:void(0)" class="layui-nav-url" data-url="/admin/index/home.html"><i
+                                        class="layui-icon layui-icon-home"></i>首页面板</a></dd>
+                            <dd><a href="javascript:void(0)" class="layui-nav-url" data-url="/admin/index/edit.html"><i
+                                        class="layui-icon layui-icon-username"></i>管理员设置</a></dd>
+                        </dl>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="javascript:void(0);">内容</a>
+                        <dl class="layui-nav-child">
+                            <dd><a class="layui-nav-url" href="javascript:void(0)"  data-url="/admin/category/list" ><i class="layui-icon layui-icon-menu-fill"></i>栏目管理</a></dd>
+                            <dd><a class="layui-nav-url" href="javascript:void(0)"  data-url="/admin/article/list" ><i class="layui-icon layui-icon-form"></i>内容管理</a></dd>
+                            <dd><a class="layui-nav-url" href="javascript:void(0)"  data-url="/admin/comment/list" ><i class="layui-icon layui-icon-reply-fill"></i>评论管理</a></dd>
+                            <dd><a class="layui-nav-url" href="javascript:void(0)"  data-url="/admin/upload/list" ><i class="layui-icon layui-icon-file"></i>附件管理</a></dd>
+                        </dl>
+                    </li>
+                    <li class="layui-nav-item"><a href="javascript:void(0);">会员</a></li>
+                    <li class="layui-nav-item setting_ul">
+                        <a href="javascript:void(0);">设置</a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="javascript:void(0);" class="layui-nav-url"
+                                    data-url="/admin/setting/index/tab/1.html"><i
+                                        class="layui-icon">&#xe620;</i>基本设置</a></dd>
+                            <dd><a href="javascript:void(0);" class="layui-nav-url"
+                                    data-url="/admin/setting/index/tab/2.html"><i
+                                        class="layui-icon ">&#xe612;</i>站长信息</a></dd>
+                            <dd><a href="javascript:void(0);" class="layui-nav-url"
+                                    data-url="/admin/setting/index/tab/3.html"><i
+                                        class="layui-icon layui-icon-form"></i>SEO设置</a></dd>
+                            <dd><a href="javascript:void(0);" class="layui-nav-url"
+                                    data-url="/admin/setting/index/tab/4.html"><i
+                                        class="layui-icon layui-icon-reply-fill"></i>评论设置</a></dd>
+                            <dd><a href="javascript:void(0);" class="layui-nav-url"
+                                    data-url="/admin/setting/index/tab/10.html"><i
+                                        class="layui-icon layui-icon-util"></i>其他设置</a></dd>
+                            <dd><a href="javascript:void(0);" class="layui-nav-url"
+                                    data-url="/admin/setting/sitemap.html"><i
+                                        class="layui-icon layui-icon-location"></i>Sitemap</a></dd>
+                            <dd><a href="javascript:void(0);" class="layui-nav-url"
+                                    data-url="/admin/setting/links.html"><i
+                                        class="layui-icon layui-icon-link"></i>友情链接</a></dd>
+                        </dl>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+        <div class="layui-body iframe-container" style="padding: 20px 40px; box-sizing: border-box;">
+            <div>
+                <iframe class="admin-iframe" id="admin-iframe" name="main" src="/admin/welcome"></iframe>
+            </div>
+        </div>
+
+
+        <div class="layui-footer footer">
+            <div class="layui-main">
+                <p>2018 © <a target="_blank" href="http://www.qq123.xin">LemonCMS</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $('.layui-nav-url').click(function () {
+            var url = $(this).data('url');
+            $('iframe').attr('src', url);
+            //遮罩层消失
+            $("#admin-iframe").load(function () {
+   
+            });
+        });
+    </script>
+</body>
+
+</html>

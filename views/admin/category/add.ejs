@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Category List</title>
+    <% include ../public/head %>
+</head>
+
+<body>
+<div id="app">
+    <div class="layui-tab layui-tab-brief main-tab-container">
+        <ul class="layui-tab-title main-tab-title">
+            <li class="layui-this"><a href="/admin/category/list">栏目列表</a></li>
+            <li><a href="/admin/category/add">添加栏目</a></li>
+            <span class="main-tab-item">栏目管理</span>
+        </ul>
+        <div class="layui-tab-content">
+            <el-form :model="formdata" :rules="formRules" ref="formRef" label-width="100px" style="width: 500px;">
+                <el-form-item label="栏目名称" prop="name" required>
+                    <el-input v-model.trim="formdata.name" placeholder="请输入栏目名称" maxlength="10" />
+                </el-form-item>
+                <el-form-item label="栏目描述" prop="description" required>
+                    <el-input type="textarea" v-model.trim="formdata.description" placeholder="请输入栏目描述" maxlength="11"></el-input>
+                </el-form-item>
+
+                <el-form-item label="模型" prop="model_id" required>
+                    <el-select v-model="formdata.model_id" placeholder="请选择模型">
+                        <el-option v-for="item in modelsList" :key="item.id" :label="item.name" :value="item.id"></el-option>
+                    </el-select>
+                </el-form-item>
+
+                <el-form-item label="上级栏目" prop="parent_id" required>
+                    <el-select v-model="formdata.parent_id" placeholder="请选择上级栏目">
+                        <el-option label="作为一级栏目" value="0"></el-option>
+                        <el-option v-for="item in categoryList" :key="item.id" :label="item.name" :value="item.id"></el-option>
+                    </el-select>
+                </el-form-item>
+                
+                <el-form-item label="排序" prop="sort" required>
+                    <el-input v-model.trim="formdata.sort" placeholder="请输入序号" maxlength="11"></el-input>
+                </el-form-item>
+
+                <el-form-item label="菜单显示" prop="is_menu">
+                    <el-switch v-model="formdata.is_menu" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+                </el-form-item>
+
+                <el-form-item>
+                    <el-button type="primary" @click="submitForm">提交</el-button>
+                </el-form-item>
+            </el-form>
+
+
+
+
+        </div>
+    </div>
+</div>
+
+<script>
+    const {createApp, ref, reactive} = Vue
+
+    const app = createApp({
+        setup() {
+            const formdata = reactive({
+                name: '',
+                description: '',
+                sort: '',
+                is_menu: false,
+                parent_id: '0',
+                model_id: ''
+            })
+            const formRules = {
+                name: [{ required: true, message: '请输入栏目名称', trigger: 'blur' }],
+                description: [{ required: true, message: '请输入栏目描述', trigger: 'blur' }],
+                parent_id: [{ required: true, message: '请输入活动名称', trigger: 'blur' }],
+                model_id: [{ required: true, message: '请选择模型', trigger: 'blur' }],
+                sort: [{ required: true, message: '请输入序号', trigger: 'blur' }],
+                name: [{ required: true, message: '请输入活动名称', trigger: 'blur' }]
+            }
+
+            const formRef = ref()
+
+            const modelsList = ref([])
+            const getModelsList = () => {
+                $.ajax({
+                    url: '/api/models/list/get',
+                    type: 'post',
+                    dataType: 'json',
+                    success: (res) => {
+                        modelsList.value = res.data.list
+                    },
+                    error: () => {
+
+                    }
+                })
+            }
+            getModelsList()
+
+            const categoryList = ref([])
+            const getCategoryList = () => {
+                $.ajax({
+                    url: '/api/category/list/get',
+                    type: 'post',
+                    dataType: 'json',
+                    success: (res) => {
+                        categoryList.value = res.data.list
+                    }
+                })
+            }
+            getCategoryList()
+
+
+            const submitForm = () => {
+                formRef.value.validate((valid) => {
+                    if (!valid) return
+
+                    $.ajax({
+                        url: "/api/category/add",
+                        data: {...formdata, is_menu: formdata.is_menu ? 1 : 0},
+                        type: "POST",
+                        cache: false,
+                        dataType: 'json',
+                        success: function (res) {
+                           alert('sucess')
+                        },
+                        error: function () {
+                            layui.layer.msg('异常');
+                        }
+                    })
+                });
+            }
+            return {
+                formRef,
+                formdata,
+                formRules,
+                modelsList,
+                categoryList,
+                submitForm
+            }
+        }
+    })
+    
+
+    app.use(ElementPlus);
+    app.mount('#app')
+    
+
+</script>
+</body>
+</html>

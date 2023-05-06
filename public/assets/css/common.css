@@ -1,0 +1,19 @@
+.common-container {
+    width: 1000px;
+    margin: 0 auto;
+}
+
+.header {
+    background-color: #2f363c;
+}
+.header .common-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 0;
+}
+.header .logo {
+    line-height: 60px;
+    font-size: 25px;
+    height: 60px;
+    color: rgba(255, 255, 255, 0.8);
+}
