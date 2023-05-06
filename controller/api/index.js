@@ -83,7 +83,6 @@ exports.modelsListGet = async ctx => {
 // 获取文章列表
 exports.articleListGet = async ctx => {
     const { currentPage, pageSize } = ctx.request.body
-    console.log(currentPage, pageSize)
     const result = await selectArticles({ currentPage, pageSize })
     ctx.body = {
         code: 200,
