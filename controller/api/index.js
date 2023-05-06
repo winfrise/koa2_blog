@@ -56,9 +56,9 @@ exports.categoryListGet = async ctx => {
 }
 
 exports.categoryAdd = async ctx => {
-    const { name, description, sort, is_menu, parent_id, model_id } = ctx.request.body
+    const { type, name, description, sort, is_menu, parent_id, model_id } = ctx.request.body
     const create_time = Math.ceil(Date.now() / 1000)
-    await insertCategory({ name, description, sort, is_menu, parent_id, model_id, create_time, update_time: create_time })
+    await insertCategory({ type, name, description, sort, is_menu, parent_id, model_id, create_time, update_time: create_time })
     ctx.body = {
         code: 200,
         message: '成功',
