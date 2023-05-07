@@ -28,6 +28,10 @@ router.get('/article/list', async ctx => {
     await ctx.render('admin/article/list', {})
 })
 
+router.get('/article/add', async ctx => {
+    await ctx.render('admin/article/add', {})
+})
+
 module.exports = function (app) {
     app.use(router.routes())
 }

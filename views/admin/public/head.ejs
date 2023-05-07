@@ -12,6 +12,21 @@
 <script src="/libs/dayjs.min.js"></script>
 <script src="/libs/axios.min.js"></script>
 <script src="/assets/js/utils.js"></script>
+<script src="/libs/tinymce/tinymce.min.js"></script>
+
+
+<style>
+#app {
+    padding: 30px;
+}
+
+</style>
+
+<script>
+    tinymce.init({
+        selector: '#mytextarea'
+    });
+</script>
 
 <script>
     axios.interceptors.response.use(function (response) {
