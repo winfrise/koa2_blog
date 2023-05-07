@@ -7,10 +7,83 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
     <% include ../public/head %>
+
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+        ul, li, ol {
+            list-style: none;
+        }
+        .top {
+            width: 100%;
+        }
+        .top .top-inner {
+            display: flex;
+            width: 800px;
+            height: 100px;
+            margin: 0 auto;
+        }
+        .top .logo {
+            width: 200px;
+        }
+        .nav {
+            width: 100%;
+            background: #485057;
+        }
+        .nav .nav-inner {
+            width: 800px;
+            display: flex;
+            margin: 0 auto;
+        }
+        .nav .nav-item {
+            width: 100px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+        }
+        .nav .nav-item {
+            
+        }
+        .nav .nav-link {
+            display: block;
+        }
+    </style>
 </head>
 
 <body>
-Home
+    <div id="app">
+        <div class="top" id="top">
+            <div class="top-inner">
+                <div class="logo">Logo</div>
+            </div>
+        </div>
+        <div id="nav" class="nav">
+            <ul class="nav-inner">
+                <li class="nav-item"><a class="nav-link" href="/home">首页</a></li>
+                <li class="nav-item"><a class="nav-link" href="/category/list?cid=1">分类1</a></li>
+                <li class="nav-item"><a class="nav-link" href="/category/list?cid=2">分类2</a></li>
+            </ul>  
+        </div>
+    </div>
+    <script>
+        const { createApp, ref, reactive } = Vue
+        const app = createApp({
+            setup() {
+
+
+                return {
+
+                }
+            }
+        })
+
+
+        app.use(ElementPlus);
+        app.mount('#app')
+
+    </script>
 </body>
 
 </html>
