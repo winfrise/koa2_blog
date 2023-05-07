@@ -62,8 +62,10 @@ exports.categoryAdd = async ctx => {
     const now_time = Math.ceil(Date.now() / 1000)
     try {
         if (id) {
+            console.log('update Category')
             await sqlApi.updateCategory({ ...data, update_time: now_time })
         } else {
+            console.log('insert Category')
             await sqlApi.insertCategory({ ...data, create_time: now_time, update_time: now_time })
         }
         ctx.body = {
