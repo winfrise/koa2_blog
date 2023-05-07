@@ -13,8 +13,6 @@
 <div id="app">
     <div class="layui-tab layui-tab-brief main-tab-container">
         <ul class="layui-tab-title main-tab-title">
-            <li class="layui-this"><a href="/admin/category/list">栏目列表</a></li>
-            <li><a href="/admin/category/add">添加栏目</a></li>
             <span class="main-tab-item">栏目管理</span>
         </ul>
         <div class="layui-tab-content">
@@ -34,7 +32,7 @@
                 </el-table-column>
                 <el-table-column label="操作">
                     <template v-slot="scope">
-                        <el-button>编辑</el-button>
+                        <el-button><a :href="`/admin/category/add?id=${scope.row.id}`">编辑</a></el-button>
                         <el-button>删除</el-button>
                         <el-button v-if="scope.row.level === 1">添加内容</el-button>
                     </template>

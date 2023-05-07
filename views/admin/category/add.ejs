@@ -12,6 +12,9 @@
 <body>
 <div id="app">
     <div class="layui-tab layui-tab-brief main-tab-container">
+        <ul class="layui-tab-title main-tab-title">
+            <span class="main-tab-item">添加分类</span>
+        </ul>
         <div class="layui-tab-content">
             <el-form :model="formdata" :rules="formRules" ref="formRef" label-width="100px" style="width: 500px;">
                 <el-form-item label="类型" prop="type" required>
@@ -54,10 +57,6 @@
                     <el-button type="primary" @click="submitForm">提交</el-button>
                 </el-form-item>
             </el-form>
-
-
-
-
         </div>
     </div>
 </div>
