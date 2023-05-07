@@ -129,3 +129,13 @@ exports.articleListGet = async ctx => {
         }
     }
 }
+
+exports.articleInsert = async ctx => {
+    const data = ctx.request.body
+    const result = await sqlApi.insertArticle(data)
+    ctx.body = {
+        code: 200,
+        message: '成功',
+        data: {}
+    }
+}

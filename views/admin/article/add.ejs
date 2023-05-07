@@ -9,12 +9,15 @@
 </head>
 <body>
     <div id="app">
-        <el-form :model="formdata" label-width="120px">
+        <el-form :model="formdata" label-width="120px" ref="formRef">
+            
             <el-form-item prop="category_id" label="所属栏目">
-                <el-select v-model="formdata.category_id" placeholder="请选择所属栏目">
-                    <el-option label="Zone one" value="shanghai" />
-                    <el-option label="Zone two" value="beijing" />
-                </el-select>
+                <el-tree-select v-model="formdata.category_id" :data="categoryList" value-key="id" :render-after-expand="false" show-checkbox check-strictly placeholder="请选择所属栏目"
+                    :props="{
+                        label: 'name',
+                        children: 'children'
+                    }"
+                />
             </el-form-item>
 
             <el-form-item prop="title" label="标题">
@@ -45,28 +48,28 @@
             </el-form-item>
             <el-form-item prop="is_recommend" label="是否推荐">
                 <el-radio-group v-model="formdata.is_recommend">
-                    <el-radio value="1" label="是"></el-radio>
-                    <el-radio value="0" label="否"></el-radio>
+                    <el-radio label="1">是</el-radio>
+                    <el-radio label="0">否</el-radio>
                 </el-radio-group>
             </el-form-item>
             <el-form-item prop="is_top" label="是否置顶">
                 <el-radio-group v-model="formdata.is_top">
-                    <el-radio value="1" label="是"></el-radio>
-                    <el-radio value="0" label="否"></el-radio>
+                    <el-radio label="1">是</el-radio>
+                    <el-radio label="0">否</el-radio>
                 </el-radio-group>
             </el-form-item>
             <el-form-item prop="is_show" label="是否显示">
                 <el-radio-group v-model="formdata.is_show">
-                    <el-radio value="1" label="是"></el-radio>
-                    <el-radio value="0" label="否"></el-radio>
+                    <el-radio label="1">是</el-radio>
+                    <el-radio label="0">否</el-radio>
                 </el-radio-group>
             </el-form-item>
 
-            <el-form-item label="内容">
-                <textarea id="mytextarea"></textarea>
+            <el-form-item prop="content" label="内容">
+                <textarea v-model="content" id="mytextarea"></textarea>
             </el-form-item>
             <el-form-item prop="create_time" label="添加时间">
-                <el-date-picker v-model="formdata.create_time" type="date" placeholder="Pick a date" style="width: 100%" />
+                <el-date-picker v-model="formdata.create_time" type="date" value-format="X" format="YYYY/MM/DD" placeholder="Pick a date" style="width: 100%" />
             </el-form-item>
             <el-form-item prop="hits" label="点击量">
                 <el-input v-model="formdata.hits" />
@@ -75,8 +78,7 @@
                 <el-input v-model="formdata.url" />
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" @click="onSubmit">Create</el-button>
-                <el-button>Cancel</el-button>
+                <el-button type="primary" @click="submitForm">提交</el-button>
             </el-form-item>
         </el-form>
     </div>
@@ -93,17 +95,55 @@
                     image_url: '',
                     file: '',
                     video_url: '',
-                    is_recommend: 0,
-                    is_top: 0,
-                    is_show: 1,
+                    is_recommend: '',
+                    is_top: '',
+                    is_show: '',
                     create_time: null,
                     hits: 0,
                     url: '',
                     content: ''
                 })
 
+                const categoryList = ref([])
+                const getCategoryList = () => {
+                    $.ajax({
+                        url: '/api/category/list/get',
+                        type: 'post',
+                        dataType: 'json',
+                        success: (res) => {
+                            categoryList.value = res.data.list
+                        }
+                    })
+                }
+                getCategoryList()
+
+
+                const formRef = ref()
+                const submitForm = () => {
+                    formRef.value.validate((valid) => {
+                        if (!valid) return
+
+                        $.ajax({
+                            url: '/api/article/insert',
+                            data: { ...formdata },
+                            type: "POST",
+                            cache: false,
+                            dataType: 'json',
+                            success: function (res) {
+                                ElementPlus.ElMessage.success('添加成功')
+                            },
+                            error: function (err) {
+                                ElementPlus.ElMessage.error(err)
+                            }
+                        })
+                    });
+                }
+
                 return {
-                    formdata
+                    formdata,
+                    formRef,
+                    categoryList,
+                    submitForm
                 }
             }
         })
