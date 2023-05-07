@@ -32,6 +32,4 @@ router.get('/article/add', async ctx => {
     await ctx.render('admin/article/add', {})
 })
 
-module.exports = function (app) {
-    app.use(router.routes())
-}
+module.exports = router

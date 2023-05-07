@@ -1,0 +1,39 @@
+<link href="/libs/layui-v2.8.1/css/layui.css" rel="stylesheet">
+<script src="/libs/layui-v2.8.1/layui.js"></script>
+<!-- <link rel="stylesheet" href="/index.css"> -->
+<link rel="stylesheet" href="/assets/css/common.css">
+<link rel="stylesheet" href="/assets/css/global.css">
+<script src="https://unpkg.com/jquery@3.3.1/dist/jquery.min.js"></script>
+<link rel="stylesheet" href="/libs/element-plus.css" />
+<script src="/libs/vue.global.js"></script>
+<script src="/libs/vue-router.global.js"></script>
+<script src="/libs/element-plus.js"></script>
+<script src="/libs/js.cookie.min.js"></script>
+<script src="/libs/dayjs.min.js"></script>
+<script src="/libs/axios.min.js"></script>
+<script src="/assets/js/utils.js"></script>
+<script src="/libs/tinymce/tinymce.min.js"></script>
+
+
+<style>
+#app {
+    padding: 30px;
+}
+
+</style>
+
+<script>
+    tinymce.init({
+        selector: '#mytextarea'
+    });
+</script>
+
+<script>
+    axios.interceptors.response.use(function (response) {
+        return response.data;
+    }, function (error) {
+        // Any status codes that falls outside the range of 2xx cause this function to trigger
+        // Do something with response error
+        return Promise.reject(error);
+    });
+</script>

@@ -10,8 +10,9 @@ const views = require('koa-views')
 // const koaStatic = require('koa-static')
 const staticCache = require('koa-static-cache')
 
-const useAdminRoutes = require('./routers/admin/index.js')
-const useApiRoutes = require('./routers/api/index.js')
+const indexRouter = require('./routers/index/index.js')
+const adminRouter = require('./routers/admin/index.js')
+const apiRouter = require('./routers/api/index.js')
 
 const app = new Koa()
 
@@ -52,8 +53,10 @@ app.use(bodyParser({
 }))
 
 //  路由
-useAdminRoutes(app)
-useApiRoutes(app)
+app.use(indexRouter.routes())
+app.use(apiRouter.routes())
+app.use(adminRouter.routes())
+
 app.use(require('./routers/signin.js').routes())
 app.use(require('./routers/signup.js').routes())
 app.use(require('./routers/posts.js').routes())

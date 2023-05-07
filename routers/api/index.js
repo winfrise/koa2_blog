@@ -14,6 +14,4 @@ router.post('/models/list/get', ApiController.modelsListGet)
 router.post('/article/list/get', ApiController.articleListGet)
 router.post('/article/insert', ApiController.articleInsert)
 
-module.exports = function (app) {
-    app.use(router.routes())
-}
+module.exports = router
