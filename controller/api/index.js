@@ -1,6 +1,7 @@
 
 
-const { selectCategorys, insertCategory, selectModels, findUserByUsername, selectArticles } = require('../../lib/db-utils.js')
+const { selectCategorys, selectModels, findUserByUsername, selectArticles } = require('../../lib/db-utils.js')
+const sqlApi = require('../../lib/db-utils.js')
 
 exports.login = async ctx => {
     let { username, password } = ctx.request.body
@@ -56,17 +57,47 @@ exports.categoryListGet = async ctx => {
 }
 
 exports.categoryAdd = async ctx => {
-    const { type, name, description, sort, is_menu, parent_id, model_id } = ctx.request.body
-    const create_time = Math.ceil(Date.now() / 1000)
-    await insertCategory({ type, name, description, sort, is_menu, parent_id, model_id, create_time, update_time: create_time })
+    const { id, type, name, description, sort, is_menu, parent_id, model_id } = ctx.request.body
+    const data = { type, name, description, sort, is_menu, parent_id, model_id, id }
+    const now_time = Math.ceil(Date.now() / 1000)
+    try {
+        if (id) {
+            await sqlApi.updateCategory({ ...data, update_time: now_time })
+        } else {
+            await sqlApi.insertCategory({ ...data, create_time: now_time, update_time: now_time })
+        }
+        ctx.body = {
+            code: 200,
+            message: '成功',
+            data: {
+
+            }
+        }
+    } catch (e) {
+        ctx.body = {
+            code: 5001
+        }
+    }
+
+}
+
+exports.categoryFind = async ctx => {
+    const { id } = ctx.request.body
+    const result = await sqlApi.findCategoryById(id)
+    if (!result) {
+        ctx.body = {
+            code: 200,
+            message: '未查询到',
+            data: {}
+        }
+        return
+    }
     ctx.body = {
         code: 200,
         message: '成功',
-        data: {
-
-        }
+        data: result[0]
     }
-}
+} 
 
 // 获取模型列表
 exports.modelsListGet = async ctx => {

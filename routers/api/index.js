@@ -7,6 +7,7 @@ router.post('/login', ApiController.login)
 
 router.post('/category/list/get', ApiController.categoryListGet)
 router.post('/category/add', ApiController.categoryAdd)
+router.post('/category/find', ApiController.categoryFind)
 
 router.post('/models/list/get', ApiController.modelsListGet)
 

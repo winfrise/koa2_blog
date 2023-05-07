@@ -62,11 +62,11 @@
 </div>
 
 <script>
-    const {createApp, ref, reactive} = Vue
-
+    const { createApp, ref, reactive } = Vue
     const app = createApp({
         setup() {
             const formdata = reactive({
+                id: '',
                 type: '',
                 name: '',
                 description: '',
@@ -116,21 +116,42 @@
             getCategoryList()
 
 
+            const id = globalUtils.getQueryString('id')
+            if (id) {
+                axios({
+                    url: '/api/category/find',
+                    method: 'post',
+                    data: {
+                        id: id
+                    }
+                }).then(res => {
+                    formdata.id = id
+                    formdata.type = res.data.type
+                    formdata.name = res.data.name
+                    formdata.description = res.data.description
+                    formdata.sort = res.data.sort
+                    formdata.is_menu = res.data.is_menu
+                    formdata.parent_id = res.data.parent_id
+                    formdata.model_id = res.data.model_id
+                })
+            }
+
+
             const submitForm = () => {
                 formRef.value.validate((valid) => {
                     if (!valid) return
 
                     $.ajax({
-                        url: "/api/category/add",
+                        url: '/api/category/add',
                         data: {...formdata, is_menu: formdata.is_menu ? 1 : 0},
                         type: "POST",
                         cache: false,
                         dataType: 'json',
                         success: function (res) {
-                           alert('sucess')
+                           ElementPlus.ElMessage.success('更新成功')
                         },
-                        error: function () {
-                            layui.layer.msg('异常');
+                        error: function (err) {
+                            ElementPlus.ElMessage.error(err)
                         }
                     })
                 });
