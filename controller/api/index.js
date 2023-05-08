@@ -155,3 +155,17 @@ exports.resourceListGet = async ctx => {
         }
     }
 }
+
+/**
+ * 上传
+ */
+exports.uploadSingle = async ctx => {
+    console.log(ctx.request.file, 'ctx')
+    ctx.body = {
+        code: 200,
+        message: '成功',
+        data: {
+            filename: ctx.request.file//返回文件名
+        }
+    }
+}

@@ -1,5 +1,6 @@
 const Router = require('koa-router');
 const router = new Router({ prefix: '/api' })
+const upload = require('../../lib/upload.js')
 
 const ApiController = require('../../controller/api/index.js')
 
@@ -18,5 +19,10 @@ router.post('/article/insert', ApiController.articleInsert)
  * 资源管理
  */
 router.post('/resource/list/get', ApiController.resourceListGet)
+
+/**
+ * 上传
+ */
+router.post('/upload/single', upload.single('file'),ApiController.uploadSingle);
 
 module.exports = router
