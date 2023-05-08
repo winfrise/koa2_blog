@@ -3,3 +3,4 @@ node_modules/
 npm-debug.log*
 public/uploads
 upload-before
+uploads-resource
