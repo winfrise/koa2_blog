@@ -25,6 +25,6 @@ router.post('/resource/upload-before/get', ApiController.uploadBeforeGet)
  * 上传
  */
 router.post('/upload/single', upload.single('file'),ApiController.uploadSingle);
-router.post('/upload/batch',ApiController.uploadBatch);
+router.post('/upload/resource/batch',ApiController.uploadBatch);
 
 module.exports = router

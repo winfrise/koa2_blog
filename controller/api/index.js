@@ -186,6 +186,8 @@ exports.uploadSingle = async ctx => {
 }
 
 exports.uploadBatch = async ctx  => {
+    const { fileList } = ctx.request.body
+    sqlApi.insertResource({list: fileList, now: Math.ceil(Date.now() / 1000)})
     ctx.body = {
         code: 200,
         message: '成功',

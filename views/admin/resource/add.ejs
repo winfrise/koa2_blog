@@ -10,8 +10,8 @@
 <body>
 <div id="app">
     <div>
-        <el-button type="primary">读取资源</el-button>
-        <el-button type="primary">上传资源</el-button>
+        <el-button type="primary" @click="getList">读取资源</el-button>
+        <el-button type="primary" @click="handleUpload">上传资源</el-button>
         <div>
             Tips:上传成功后，请手动移动文件到/public/uploads-resource文件夹下
         </div>
@@ -68,7 +68,7 @@
 
             const handleUpload = () => {
                 axios({
-                    url: '/api/resource/upload/batch',
+                    url: '/api/upload/resource/batch',
                     method: 'post',
                     data: {
                         fileList:  listData.value
@@ -80,7 +80,9 @@
                 })
             }
             return {
-                listData
+                listData,
+                handleUpload,
+                getList
             }
         }
     })
