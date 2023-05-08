@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>资源列表</title>
+    <% include ../public/head %>
+</head>
+
+<body>
+<div id="app">
+    <el-table :data="tableData" height="100%" border style="width: 100%">
+        <el-table-column prop="filename" label="文件名称" width="180">
+        </el-table-column>
+        <el-table-column prop="file_size" label="文件大小" width="180">
+        </el-table-column>
+        <el-table-column prop="file_path" label="文件路径">
+        </el-table-column>
+        <el-table-column prop="create_time" label="上传时间">
+        </el-table-column>
+        <el-table-column prop="status" label="状态">
+        </el-table-column><el-table-column label="操作">
+        </el-table-column>
+    </el-table>
+    <div>
+        <el-pagination background layout="total, prev, pager, next, sizes, jumper" :total="pagination.total" :currentPage="pagination.currentPage" :pageSize="pagination.pageSize" :page-sizes="[10, 20, 30, 40, 50, 100]" @size-change="onPageSizeChange" @current-change="onCurrentPageChange"></el-pagination>
+    </div>
+</div>
+
+<script>
+    const { createApp, ref, reactive } = Vue
+    const app = createApp({
+        setup() {
+            const tableData = ref([])
+
+            const pagination = reactive({
+                currentPage: 1,
+                pageSize: 10,
+                total: 0
+            })
+
+            const onPageSizeChange = (pageSize) => {
+                pagination.pageSize = pageSize
+                pagination.currentPage = 1
+                getResourceList()
+            }
+
+            const onCurrentPageChange = (currentPage) => {
+                pagination.currentPage = currentPage
+                getResourceList()
+            }
+
+            const getResourceList = () => {
+                const params = {
+                    currentPage: pagination.currentPage,
+                    pageSize: pagination.pageSize
+                }
+                axios({
+                    url: '/api/resource/list/get',
+                    method: 'post',
+                    data: params
+                }).then(res => {
+                    tableData.value = res.data.list,
+                    pagination.total = res.data.total
+                })
+            }
+            getResourceList()
+            return {
+                tableData,
+                pagination,
+                onPageSizeChange,
+                onCurrentPageChange
+            }
+        }
+    })
+
+
+    app.use(ElementPlus);
+    app.mount('#app')
+</script>
+</body>
+
+</html>

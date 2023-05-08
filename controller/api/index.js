@@ -139,3 +139,19 @@ exports.articleInsert = async ctx => {
         data: {}
     }
 }
+
+/**
+ * 资源管理
+ */
+exports.resourceListGet = async ctx => {
+    const {currentPage, pageSize} = ctx.request.body
+    const [listRes, countRes] = await Promise.all([sqlApi.selectResources({ currentPage, pageSize }), sqlApi.getResourceCount()])
+    ctx.body = {
+        code: 200,
+        message: '成功',
+        data: {
+            list: listRes,
+            total: countRes[0].count
+        }
+    }
+}

@@ -32,4 +32,16 @@ router.get('/article/add', async ctx => {
     await ctx.render('admin/article/add', {})
 })
 
+/**
+ * 资源
+ */
+// 资源列表
+router.get('/resource/list', async ctx => {
+    await ctx.render('admin/resource/list', {})
+})
+// 添加资源
+router.get('/resource/add', async ctx => {
+    await ctx.render('admin/resource/add', {})
+})
+
 module.exports = router
