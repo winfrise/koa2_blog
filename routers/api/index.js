@@ -15,10 +15,12 @@ router.post('/models/list/get', ApiController.modelsListGet)
 router.post('/article/list/get', ApiController.articleListGet)
 router.post('/article/insert', ApiController.articleInsert)
 
+router.post('/uploads/list/get', ApiController.uploadsListGet)
 /**
  * 资源管理
  */
 router.post('/resource/list/get', ApiController.resourceListGet)
+
 router.post('/resource/upload-before/get', ApiController.uploadBeforeGet)
 
 /**

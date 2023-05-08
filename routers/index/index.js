@@ -21,6 +21,13 @@ router.get('/article/details', async ctx => {
     await ctx.render('index/article/details')
 })
 
+router.get('/uploads/list', async ctx => {
+    await ctx.render('index/uploads/list')
+})
+router.get('/uploads/details', async ctx => {
+    await ctx.render('index/uploads/details')
+})
+
 /**
  * 资源页
  */

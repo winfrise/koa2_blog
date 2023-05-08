@@ -50,7 +50,7 @@
                         <el-card v-for="item in listData" :key="item.id" class="list-card" :body-style="{ padding: '0px' }">
                             <a :href="`/resource/details?id=${item.id}`">
                                 <div class="image-container">
-                                    <el-image class="card-image" :src="'/uploads-resource/'+ item.filename" fit="fill" lazy>
+                                    <el-image class="card-image" :src="item.file_path" fit="fill" lazy>
                                         <template #error>
                                             <div class="image-error">
                                                 图片加载失败
@@ -104,7 +104,7 @@
                         pageSize: pagination.pageSize
                     }
                     axios({
-                        url: '/api/resource/list/get',
+                        url: '/api/uploads/list/get',
                         method: 'post',
                         data: params
                     }).then(res => {

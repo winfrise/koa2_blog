@@ -145,9 +145,22 @@ exports.articleInsert = async ctx => {
 /**
  * 资源管理
  */
+exports.uploadsListGet = async ctx => {
+    const {currentPage, pageSize} = ctx.request.body
+    const [listRes, countRes] = await Promise.all([sqlApi.selectUploads({ currentPage, pageSize }), sqlApi.getUploadsCount()])
+    ctx.body = {
+        code: 200,
+        message: '成功',
+        data: {
+            list: listRes,
+            total: countRes[0].count
+        }
+    }
+}
+
 exports.resourceListGet = async ctx => {
     const {currentPage, pageSize} = ctx.request.body
-    const [listRes, countRes] = await Promise.all([sqlApi.selectResources({ currentPage, pageSize }), sqlApi.getResourceCount()])
+    const [listRes, countRes] = await Promise.all([sqlApi.selectResource({ currentPage, pageSize }), sqlApi.getResourceCount()])
     ctx.body = {
         code: 200,
         message: '成功',
