@@ -19,10 +19,12 @@ router.post('/article/insert', ApiController.articleInsert)
  * 资源管理
  */
 router.post('/resource/list/get', ApiController.resourceListGet)
+router.post('/resource/upload-before/get', ApiController.uploadBeforeGet)
 
 /**
  * 上传
  */
 router.post('/upload/single', upload.single('file'),ApiController.uploadSingle);
+router.post('/upload/batch',ApiController.uploadBatch);
 
 module.exports = router

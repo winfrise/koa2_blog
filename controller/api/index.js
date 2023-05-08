@@ -2,6 +2,8 @@
 
 const { selectCategorys, selectModels, findUserByUsername, selectArticles } = require('../../lib/db-utils.js')
 const sqlApi = require('../../lib/db-utils.js')
+const getFolderFile = require('../../plugins/getFolderFiles.js')
+const path = require('path')
 
 exports.login = async ctx => {
     let { username, password } = ctx.request.body
@@ -156,16 +158,39 @@ exports.resourceListGet = async ctx => {
     }
 }
 
+exports.uploadBeforeGet = async ctx => {
+    const beforeUpdate = path.resolve(__dirname, '../../upload-before')
+    const files = getFolderFile(beforeUpdate)
+    console.log(files)
+    ctx.body = {
+        code: 200,
+        message: '成功',
+        data: {
+            list: files,
+            total: 0
+        }
+    }
+}
+
 /**
  * 上传
  */
 exports.uploadSingle = async ctx => {
-    console.log(ctx.request.file, 'ctx')
     ctx.body = {
         code: 200,
         message: '成功',
         data: {
             filename: ctx.request.file//返回文件名
+        }
+    }
+}
+
+exports.uploadBatch = async ctx  => {
+    ctx.body = {
+        code: 200,
+        message: '成功',
+        data: {
+
         }
     }
 }

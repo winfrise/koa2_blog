@@ -10,16 +10,42 @@
 <body>
 <div id="app">
     <div>
-        <el-upload v-model:file-list="fileList" class="upload-demo"
-            action="/api/upload/single" multiple :on-preview="handlePreview"
-            :on-remove="handleRemove" :before-remove="beforeRemove" :limit="3" :on-exceed="handleExceed">
-            <el-button type="primary">Click to upload</el-button>
-            <template #tip>
-                <div class="el-upload__tip">
-                    jpg/png files with a size less than 500KB.
-                </div>
-            </template>
-        </el-upload>
+        <el-button type="primary">读取资源</el-button>
+        <el-button type="primary">上传资源</el-button>
+        <div>
+            Tips:上传成功后，请手动移动文件到/public/uploads-resource文件夹下
+        </div>
+        <el-main>
+            <el-table
+            :data="listData"
+            style="width: 100%">
+            <el-table-column
+              type="index"
+              label="文件名"
+              width="180">
+            </el-table-column>
+            <el-table-column
+              prop="name"
+              label="文件名"
+              width="180">
+            </el-table-column>
+            <el-table-column
+              prop="suffix"
+              label="文件路径"
+              width="180">
+            </el-table-column>
+            <el-table-column
+              prop="file_path"
+              label="文件路径">
+            </el-table-column>
+
+            <el-table-column
+              label="操作">
+
+            </el-table-column>
+          </el-table>
+      
+        </el-main>
     </div>
 </div>
 
@@ -27,29 +53,34 @@
     const { createApp, ref, reactive } = Vue
     const app = createApp({
         setup() {
-            const fileList = ref([])
-            const handleRemove = () => {
-                console.log('handleRemove')
+            const listData = ref([])
+
+            const getList = () => {
+                axios({
+                    url: '/api/resource/upload-before/get',
+                    method: 'post'
+                }).then(res =>  {
+                    listData.value = res.data.list || []
+                })
             }
 
-            const handlePreview = (uploadFile) => {
-                console.log(uploadFile)
-            }
+            getList()
 
-            const handleExceed = (files, uploadFiles) => {
-                ElMessage.warning(
-                    `The limit is 3, you selected ${files.length} files this time, add up to ${files.length + uploadFiles.length
-                    } totally`
-                )
-            }
-            const beforeRemove = () => {
-                console.log('beforeRemove')
+            const handleUpload = () => {
+                axios({
+                    url: '/api/resource/upload/batch',
+                    method: 'post',
+                    data: {
+                        fileList:  listData.value
+                    }
+                }).then(res =>  {
+                    if  (res.code === '200') {
+                        ElementPlus.ElMessage.succes('上传成功')
+                    }
+                })
             }
             return {
-                handleRemove,
-                handlePreview,
-                handleExceed,
-                beforeRemove
+                listData
             }
         }
     })
