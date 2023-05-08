@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>资源列表</title>
+    <% include ../public/head %>
+    <style>
+        .list {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .list-card {
+            width: 270px;
+            margin: 10px;
+        }
+        .image-container {
+            width: 270px;
+            height: 152px;
+        }
+        .card-image {
+            width: 100%;
+            height: 100%;
+        }
+        .image-error {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            background-color: #f5f7fa;
+            color: #a8abb2;
+        }
+        .filename {
+            width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <el-container>
+            <% include ../public/header %>
+            <el-main>
+                <div class="common-width" style="margin: 0 auto;">
+                    <div class="list">
+                        <el-card v-for="item in listData" :key="item.id" class="list-card" :body-style="{ padding: '0px' }">
+                            <a :href="`/resource/details?id=${item.id}`">
+                                <div class="image-container">
+                                    <el-image class="card-image" :src="item.file_path" fit="fill" lazy>
+                                        <template #error>
+                                            <div class="image-error">
+                                                图片加载失败
+                                            </div>
+                                        </template>
+                                    </el-image>
+                                </div>
+                                <div style="padding: 14px;">
+                                    <div class="filename">{{item.filename}}</div>
+                                    <div class="bottom clearfix">
+                                        <time class="time">xxx</time>
+                                        <el-button type="text" class="button">操作按钮</el-button>
+                                    </div>
+                                </div>
+                            </a>
+                        </el-card>
+                    </div>
+                    <el-pagination background layout="total, prev, pager, next, sizes, jumper" :total="pagination.total"
+                        :currentPage="pagination.currentPage" :pageSize="pagination.pageSize" :page-sizes="[10, 20, 30, 40, 50, 100]"
+                        @size-change="onPageSizeChange" @current-change="onCurrentPageChange">
+                    </el-pagination>
+                </div>
+            </el-main>
+            <% include ../public/footer %>
+        </el-container>
+    </div>
+    <script>
+        const { createApp, ref, reactive } = Vue
+        const app = createApp({
+            setup() {
+                const pagination = reactive({
+                    currentPage: 1,
+                    pageSize: 10,
+                    total: 0
+                })
+
+                const onPageSizeChange = (pageSize) => {
+                    pagination.pageSize = pageSize
+                    pagination.currentPage = 1
+                    getList()
+                }
+
+                const onCurrentPageChange = (currentPage) => {
+                    pagination.currentPage = currentPage
+                    getList()
+                }
+                const listData = ref([])
+                const getList = () => {
+                    const params = {
+                        currentPage: pagination.currentPage,
+                        pageSize: pagination.pageSize
+                    }
+                    axios({
+                        url: '/api/resource/list/get',
+                        method: 'post',
+                        data: params
+                    }).then(res => {
+                        listData.value = res.data.list,
+                        pagination.total = res.data.total
+                    })
+                }
+                getList()
+                return {
+                    pagination,
+                    listData,
+                    onPageSizeChange,
+                    onCurrentPageChange
+                }
+            }
+        })
+
+
+        app.use(ElementPlus);
+        app.mount('#app')
+
+    </script>
+</body>
+</html>

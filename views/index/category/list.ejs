@@ -10,7 +10,23 @@
 </head>
 
 <body>
-Category List
+    <div id="app"></div>
+    <script>
+        const { createApp, ref, reactive } = Vue
+        const app = createApp({
+            setup() {
+
+                return {
+
+                }
+            }
+        })
+
+
+        app.use(ElementPlus);
+        app.mount('#app')
+
+    </script>
 </body>
 
 </html>

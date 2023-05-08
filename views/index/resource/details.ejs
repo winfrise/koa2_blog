@@ -1,16 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Article List</title>
+    <title>资源详情</title>
     <% include ../public/head %>
 </head>
-
 <body>
-    <div id="app"></div>
+    <div id="app">
+        <el-container>
+            <% include ../public/header %>
+            <el-main>
+                
+            </el-main>
+            <% include ../public/footer %>
+        </el-container>
+    </div>
     <script>
         const { createApp, ref, reactive } = Vue
         const app = createApp({
@@ -25,8 +31,7 @@
 
         app.use(ElementPlus);
         app.mount('#app')
-
+    
     </script>
 </body>
-
 </html>

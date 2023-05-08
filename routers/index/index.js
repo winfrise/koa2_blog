@@ -21,4 +21,13 @@ router.get('/article/details', async ctx => {
     await ctx.render('index/article/details')
 })
 
+/**
+ * 资源页
+ */
+router.get('/resource/list', async ctx => {
+    await ctx.render('index/resource/list')
+})
+router.get('/resource/details', async ctx => {
+    await ctx.render('index/resource/details')
+})
 module.exports = router
