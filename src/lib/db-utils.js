@@ -71,10 +71,11 @@ exports.getResourceCount = () => {
     return query(_sql)
 }
 
-exports.insertResource =  ({list, now}) => {
+exports.insertResource =  (list) => {
     return new Promise(( resolve, reject ) => {
         list.forEach(async item => {
-            const values = [item.name, item.file_size, now,item.filename, item.file_path, item.suffix]
+            const currentTime = Math.ceil(Date.now() / 1000)
+            const values = [item.name, item.file_size, currentTime,item.filename, item.file_path, item.suffix]
             let _sql = `insert into le_resource set name=?,file_size=?, create_time=?,filename=?,file_path=?,suffix=?;`
             await query( _sql, values )
         })

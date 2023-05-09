@@ -12,28 +12,29 @@
     <div>
         <el-button type="primary" @click="getList">读取资源</el-button>
         <el-button type="primary" @click="handleUpload">上传资源</el-button>
-        <div>
-            Tips:上传成功后，请手动移动文件到/public/uploads-resource文件夹下
-        </div>
         <el-main>
-            <el-table
-            :data="listData"
-            style="width: 100%">
+            <el-table :data="listData" style="width: 100%">
             <el-table-column
               type="index"
-              label="文件名"
-              width="180">
+              label="序号"
+            >
             </el-table-column>
+
+            <el-table-column prop="name" label="名称" width="180">
+            </el-table-column>
+
             <el-table-column
-              prop="name"
+              prop="filename"
               label="文件名"
               width="180">
             </el-table-column>
+
             <el-table-column
               prop="suffix"
               label="文件路径"
               width="180">
             </el-table-column>
+
             <el-table-column
               prop="file_path"
               label="文件路径">
@@ -57,7 +58,7 @@
 
             const getList = () => {
                 axios({
-                    url: '/api/resource/upload-before/get',
+                    url: '/api/upload/temporary/get',
                     method: 'post'
                 }).then(res =>  {
                     listData.value = res.data.list || []
@@ -67,8 +68,11 @@
             getList()
 
             const handleUpload = () => {
+                if (listData.value.length === 0) {
+                    return ElementPlus.ElMessage.error('请选择文件后再点击上传')
+                }
                 axios({
-                    url: '/api/upload/resource/batch',
+                    url: '/api/upload/batch',
                     method: 'post',
                     data: {
                         fileList:  listData.value

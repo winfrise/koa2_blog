@@ -4,6 +4,7 @@ const { selectCategorys, selectModels, findUserByUsername, selectArticles } = re
 const sqlApi = require('../../lib/db-utils.js')
 const getFolderFile = require('../../plugins/getFolderFiles.js')
 const path = require('path')
+const fs = require('fs')
 
 exports.login = async ctx => {
     let { username, password } = ctx.request.body
@@ -131,7 +132,7 @@ exports.articleListGet = async ctx => {
         }
     }
 }
-
+// 插入文章
 exports.articleInsert = async ctx => {
     const data = ctx.request.body
     const result = await sqlApi.insertArticle(data)
@@ -145,6 +146,7 @@ exports.articleInsert = async ctx => {
 /**
  * 资源管理
  */
+// 获取上传列表
 exports.uploadsListGet = async ctx => {
     const {currentPage, pageSize} = ctx.request.body
     const [listRes, countRes] = await Promise.all([sqlApi.selectUploads({ currentPage, pageSize }), sqlApi.getUploadsCount()])
@@ -158,6 +160,7 @@ exports.uploadsListGet = async ctx => {
     }
 }
 
+// 获取资源列表
 exports.resourceListGet = async ctx => {
     const {currentPage, pageSize} = ctx.request.body
     const [listRes, countRes] = await Promise.all([sqlApi.selectResource({ currentPage, pageSize }), sqlApi.getResourceCount()])
@@ -171,22 +174,23 @@ exports.resourceListGet = async ctx => {
     }
 }
 
-exports.uploadBeforeGet = async ctx => {
-    const beforeUpdate = path.resolve(__dirname, '../../upload-before')
-    const files = getFolderFile(beforeUpdate)
-    console.log(files)
+// 获取批量上传列表
+exports.uploadTemporaryGet = async ctx => {
+    const uploadTempPath = path.resolve(__dirname, '../../../upload-temp')
+    const files = getFolderFile(uploadTempPath)
+    const lock = fs.existsSync(uploadTempPath + '/.lock')
     ctx.body = {
         code: 200,
         message: '成功',
         data: {
             list: files,
-            total: 0
+            lock
         }
     }
 }
 
 /**
- * 上传
+ * 上传单个文件
  */
 exports.uploadSingle = async ctx => {
     ctx.body = {
@@ -198,9 +202,10 @@ exports.uploadSingle = async ctx => {
     }
 }
 
+// 批量上传，需要手动上传文件
 exports.uploadBatch = async ctx  => {
     const { fileList } = ctx.request.body
-    sqlApi.insertResource({list: fileList, now: Math.ceil(Date.now() / 1000)})
+    sqlApi.insertResource(list)
     ctx.body = {
         code: 200,
         message: '成功',
