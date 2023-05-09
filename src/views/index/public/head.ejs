@@ -22,12 +22,6 @@
 </style>
 
 <script>
-    tinymce.init({
-        selector: '#mytextarea'
-    });
-</script>
-
-<script>
     axios.interceptors.response.use(function (response) {
         return response.data;
     }, function (error) {

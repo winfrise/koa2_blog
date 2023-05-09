@@ -45,6 +45,7 @@
                         <el-button><a :href="`/admin/category/add?id=${scope.row.id}`">编辑</a></el-button>
                         <el-button disabled>删除</el-button>
                         <el-button v-if="scope.row.type === 1"><a :href="`/admin/category/add?parent_id=${scope.row.id}`">添加子分类</a></el-button>
+                        <el-button v-else><a :href="`/admin/article/add?category_id=${scope.row.id}`">添加文章</a></el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -56,11 +57,6 @@
     const {createApp, ref} = Vue
 
     const app = createApp({
-        data() {
-            return {
-                message: 'Hello Vue!'
-            }
-        },
         setup() {
             const tableData = ref([])
             axios({

@@ -9,10 +9,10 @@
 </head>
 <body>
     <div id="app">
-        <el-form :model="formdata" label-width="120px" ref="formRef">
+        <el-form :model="formdata" :rules="formRules" label-width="120px" ref="formRef">
             
             <el-form-item prop="category_id" label="所属栏目">
-                <el-tree-select v-model="formdata.category_id" :data="categoryList" value-key="id" :render-after-expand="false" show-checkbox check-strictly placeholder="请选择所属栏目"
+                <el-tree-select v-model="formdata.category_id" :data="categoryList" value-key="id" :render-after-expand="true" placeholder="请选择所属栏目"
                     :props="{
                         label: 'name',
                         children: 'children'
@@ -66,7 +66,7 @@
             </el-form-item>
 
             <el-form-item prop="content" label="内容">
-                <textarea v-model="content" id="mytextarea"></textarea>
+                <tiny-editor v-model="formdata.content"></tiny-editor>
             </el-form-item>
             <el-form-item prop="create_time" label="添加时间">
                 <el-date-picker v-model="formdata.create_time" type="date" value-format="X" format="YYYY/MM/DD" placeholder="Pick a date" style="width: 100%" />
@@ -84,7 +84,7 @@
     </div>
 
     <script>
-        const { createApp, ref, reactive } = Vue
+        const { createApp, ref, unref, reactive, onMounted } = Vue
         const app = createApp({
             setup() {
                 const formdata = reactive({
@@ -104,6 +104,8 @@
                     content: ''
                 })
 
+                const category_id = globalUtils.getQueryString('category_id')
+                if (category_id) formdata.category_id = +category_id
                 const categoryList = ref([])
                 const getCategoryList = () => {
                     $.ajax({
@@ -118,6 +120,15 @@
                 getCategoryList()
 
 
+                const formRules = {
+                    category_id: [{ required: true, message: '请选择分类', trigger: 'change' }],
+                    title: [{ required: true, message: '请输入标题', trigger: 'blur' }],
+                    content: [{ required: true, message: '请输入内容', trigger: 'change'}],
+                    is_recommend: [{ required: true, message: '请选择是否支持评论', trigger: 'change' }],
+                    is_top: [{ required: true, message: '请选择是否置顶', trigger: 'change' }],
+                    is_show: [{ required: true, message: '请选择是否显示', trigger: 'change' }],
+                    create_time: [{ required: true, message: '请选择创建时间', trigger: 'change' }]
+                }
                 const formRef = ref()
                 const submitForm = () => {
                     formRef.value.validate((valid) => {
@@ -130,7 +141,9 @@
                             cache: false,
                             dataType: 'json',
                             success: function (res) {
+                                if (res.code !== 200) return
                                 ElementPlus.ElMessage.success('添加成功')
+                                location.href = '/admin/article/list'
                             },
                             error: function (err) {
                                 ElementPlus.ElMessage.error(err)
@@ -142,14 +155,17 @@
                 return {
                     formdata,
                     formRef,
+                    formRules,
                     categoryList,
-                    submitForm
+                    submitForm,
+                    Editor
                 }
             }
         })
 
 
         app.use(ElementPlus);
+        app.component('tiny-editor', Editor)
         app.mount('#app')
     </script>
 </body>
