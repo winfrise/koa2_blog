@@ -32,6 +32,12 @@ exports.login = async ctx => {
     }
 }
 
+exports.menuListGet = async ctx => {
+    const result = await sqlApi.selectMenus()
+    return {code: 200, message: '成功', data: {list: result}}
+
+}
+
 exports.categoryListGet = async ctx => {
     function arrayToTree(arr, parent_id) {
         var tree = [];

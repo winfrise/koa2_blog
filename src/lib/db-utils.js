@@ -6,6 +6,10 @@ exports.findUserByUsername = (username) => {
     return query(_sql)
 }
 
+exports.selectMenus = () => {
+    let _sql = `select * from le_category where is_menu=1 order by sort desc`
+    return query(_sql)
+}
 // 查询栏目列表
 exports.selectCategorys = () => {
     let _sql = `select * from le_category order by id desc`
