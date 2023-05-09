@@ -2,7 +2,7 @@
 
 const { selectCategorys, selectModels, findUserByUsername, selectArticles } = require('../../lib/db-utils.js')
 const sqlApi = require('../../lib/db-utils.js')
-const getFolderFile = require('../../plugins/getFolderFiles.js')
+const getFolderFiles = require('../../plugins/getFolderFiles.js')
 const path = require('path')
 const fs = require('fs')
 
@@ -177,7 +177,7 @@ exports.resourceListGet = async ctx => {
 // 获取批量上传列表
 exports.uploadTemporaryGet = async ctx => {
     const uploadTempPath = path.resolve(__dirname, '../../../upload-temp')
-    const files = getFolderFile(uploadTempPath)
+    const files = getFolderFiles(uploadTempPath)
     const lock = fs.existsSync(uploadTempPath + '/.lock')
     ctx.body = {
         code: 200,
@@ -205,7 +205,19 @@ exports.uploadSingle = async ctx => {
 // 批量上传，需要手动上传文件
 exports.uploadBatch = async ctx  => {
     const { fileList } = ctx.request.body
-    sqlApi.insertResource(list)
+    
+    const uploadTempPath = path.resolve(__dirname, '../../../upload-temp')
+    if (fs.existsSync(uploadTempPath + '/.lock')) {
+        ctx.body = {
+            code: 5002,
+            message: '请删除锁定的文件后再上传',
+            data: {}
+        }
+        return
+    }
+
+    await sqlApi.insertResource(fileList)
+    fs.writeFileSync(uploadTempPath + '/.lock', '')
     ctx.body = {
         code: 200,
         message: '成功',

@@ -1,38 +1,31 @@
 const path = require('path')
 const fs = require('fs')
 
-function getFolderFile (root) {
-    let jsonFiles = [];
-    function findJsonFile(www) {
-        if (fs.existsSync(root)) {
-            let files = fs.readdirSync(www);
-            files.forEach(function (item, index) {
-                let fPath =  path.join(www,item);
-                let stat = fs.statSync(fPath);
-                if(stat.isDirectory() === true) {
-                    findJsonFile(fPath);
-                }
-                if (stat.isFile() === true) { 
-                    // jsonFiles.push(fPath);
-                    // jsonFiles.push(fPath.replace(www + '/', ''));
+function getFolderFiles(root) {
+    let result = []
+    if (fs.existsSync(root)) {
+        let files = fs.readdirSync(root);
+        files.forEach(item => {
+            let fullPath = path.join(root, item);
 
-                    const matches  = item.match(/([\w\.-]+)\.(\w+)$/)
-                    if (matches) {
-                        jsonFiles.push({
-                            file_path: fPath,
-                            filename: item,
-                            suffix: matches[2],
-                            name: matches[1],
-                            file_size: 0
-                        })
-                    }
-
+            const stat = fs.statSync(fullPath);
+            if (stat.isDirectory()) {
+                result.push(...getFolderFiles(fullPath));
+            } else if (stat.isFile()) {
+                const matches = item.match(/([\w\.-]+)\.(\w+)$/)
+                if (matches) {
+                    result.push({
+                        file_path: fullPath.split('\\upload-temp\\')[1],
+                        filename: item,
+                        suffix: matches[2],
+                        name: matches[1],
+                        file_size: 0
+                    })
                 }
-            });
-        }
+            }
+        })
     }
-    findJsonFile(root)
-    return jsonFiles;
+    return result
 }
 
-module.exports = getFolderFile
+module.exports = getFolderFiles

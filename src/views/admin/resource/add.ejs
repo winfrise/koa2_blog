@@ -78,9 +78,10 @@
                         fileList:  listData.value
                     }
                 }).then(res =>  {
-                    if  (res.code === '200') {
-                        ElementPlus.ElMessage.succes('上传成功')
+                    if (res.code !== 200) {
+                        return ElementPlus.ElMessage.error(res.message)
                     }
+                    ElementPlus.ElMessage.success('上传成功')
                 })
             }
             return {
