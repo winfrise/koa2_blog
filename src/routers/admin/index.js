@@ -43,5 +43,9 @@ router.get('/resource/list', async ctx => {
 router.get('/resource/add', async ctx => {
     await ctx.render('admin/resource/add', {})
 })
+// 添加资源
+router.get('/resource/details', async ctx => {
+    await ctx.render('admin/resource/details', {})
+})
 
 module.exports = router
