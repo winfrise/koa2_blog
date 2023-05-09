@@ -4,7 +4,7 @@ const config = {
   // 数据库配置
   database: {
     DATABASE: 'le_blog',
-    USERNAME: 'root',
+    USERNAME: 'fa-root',
     PASSWORD: 'root1234',
     PORT: '3306',
     HOST: 'localhost'

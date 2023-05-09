@@ -1,7 +1,15 @@
-<el-header>Header</el-header>
 
-<% menus.forEach(function(item){ %>
-<span>
-    <%= item.name %>
-</span>
-<% }) %>
+<div class="header">
+    <div class="common-width header-inner">
+        <div class="logo">我的博客</div>
+    </div>
+</div>
+
+
+<div class="nav">
+    <ul class="common-width nav-inner">
+        <% menus.forEach(function(item){ %>
+        <li class="nav-item"><a class="nav-link" href=""><%= item.name %></a></li>
+        <% }) %>
+    </ul>
+</div>
