@@ -9,17 +9,108 @@
 
 <body>
     <div id="app">
-        <div>
-        </div>
+        <el-main>
+            <el-form :model="details" :rules="formRules" label-width="100px" ref="formRef">
+                <el-form-item prop="id" label="ID">
+                    <el-input v-model="details.id" disabled></el-input>
+                </el-form-item>
+                <el-form-item prop="name" label="名称">
+                    <el-input v-model="details.name" :disabled="disabled"></el-input>
+                </el-form-item>
+
+                <el-form-item prop="status" label="状态">
+                    <el-input v-model="details.status" :disabled="disabled"></el-input>
+                </el-form-item>
+
+                <el-form-item prop="filename" label="文件名称">
+                    <el-input v-model="details.filename" disabled></el-input>
+                </el-form-item>
+
+                <el-form-item prop="file_path" label="文件路径">
+                    <el-input v-model="details.file_path" disabled></el-input>
+                </el-form-item>
+
+                <el-form-item prop="suffix" label="文件后缀">
+                    <el-input v-model="details.suffix" disabled></el-input>
+                </el-form-item>
+
+                <el-form-item prop="file_size" label="文件大小">
+                    <el-input v-model="details.file_size" disabled></el-input>
+                </el-form-item>
+                <el-form-item prop="create_time" label="创建时间">
+                    <el-input v-model="details.create_time" disabled></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <template v-if="disabled">
+                        <el-button @click="disabled = false">编辑</el-button>
+                    </template>
+
+                    <template v-else>
+                        <el-button @click="handleSubmit">提交</el-button>
+                        <el-button @click="disabled = true">取消编辑</el-button>
+                    </template>
+                </el-form-item>
+            </el-form>
+        </el-main>
     </div>
 
     <script>
         const { createApp, ref, reactive } = Vue
         const app = createApp({
             setup() {
+                const details = ref({})
+                const disabled = ref(true)
+                const id = globalUtils.getQueryString('id')
+                const getDetails = () => {
+                    if (!id) return ElementPlus.ElMessage.error('ID不能为空')
+                    axios({
+                        url: '/api/resource/details/get',
+                        method: 'post',
+                        data: {id}
+                    }).then(res => {
+                        if (res.code !== 200) {
+                            return 
+                        }
+                        details.value = res.data.details
+                    })
+                }
 
+                const updateDetails = () => {
+                    axios({
+                        url: '/api/resource/details/update',
+                        method: 'post',
+                        data: { ...details.value }
+                    }).then(res => {
+                        if (res.code !== 200) {
+                            return 
+                        }
+
+                        ElementPlus.ElMessage.success('更新成功')
+                        
+                    })
+                }
+
+                const formRef = ref()
+                const formRules = {
+                    name: [{required: true, message: '请输入资源名称', trigger: 'blur'}],
+                    status: [{ required: true, message: '请设置状态', trigger: 'blur' }]
+                }
+
+                getDetails()
+
+                const handleSubmit = () => {
+                    formRef.value.validate(async valid => {
+                        if (!valid) return
+                        await updateDetails()
+                        disabled.value = true
+                    })
+                    disabled.value = true
+                }
                 return {
-
+                    formRef,
+                    disabled,
+                    details,
+                    handleSubmit
                 }
             }
         })

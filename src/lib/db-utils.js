@@ -71,6 +71,7 @@ exports.getResourceCount = () => {
     return query(_sql)
 }
 
+// 批量定入资源
 exports.insertResource =  (list) => {
     return new Promise(( resolve, reject ) => {
         list.forEach(async item => {
@@ -81,5 +82,18 @@ exports.insertResource =  (list) => {
         })
         resolve()
     })
-
 }
+
+// 获取资源详情
+exports.findResourceById = (id) => {
+    let _sql = `select * from le_resource where id=${id}`
+    return query(_sql)
+}
+
+// 更新资源
+exports.updateResourceById = ({ id, name, status }) => {
+    const values = [name, status, id]
+    let _sql = `update le_resource set name=?,status=? where id=?`
+    return query(_sql, values)
+}
+
