@@ -38,15 +38,15 @@
                     </el-select>
                 </el-form-item>
 
-                <el-form-item label="上级栏目" prop="parent_id" required>
+                <el-form-item v-if="formdata.type !== 1" label="上级栏目" prop="parent_id" required>
                     <el-select v-model="formdata.parent_id" placeholder="请选择上级栏目">
-                        <el-option label="作为一级栏目" value="0"></el-option>
+                        <el-option label="作为一级栏目" :value="0"></el-option>
                         <el-option v-for="item in categoryList" :key="item.id" :label="item.name" :value="item.id"></el-option>
                     </el-select>
                 </el-form-item>
                 
                 <el-form-item label="排序" prop="sort" required>
-                    <el-input v-model.trim="formdata.sort" placeholder="请输入序号" maxlength="11"></el-input>
+                    <el-input-number v-model="formdata.sort"  :min="0" label="请输入序号"></el-input-number>
                 </el-form-item>
 
                 <el-form-item label="菜单显示" prop="is_menu">
@@ -72,10 +72,11 @@
                 description: '',
                 sort: '',
                 is_menu: false,
-                parent_id: '0',
+                parent_id: 0,
                 model_id: ''
             })
             const formRules = {
+                type: [{ required: true, message: '请选择类型', trigger: 'blur' }],
                 name: [{ required: true, message: '请输入栏目名称', trigger: 'blur' }],
                 description: [{ required: true, message: '请输入栏目描述', trigger: 'blur' }],
                 parent_id: [{ required: true, message: '请输入活动名称', trigger: 'blur' }],
@@ -116,6 +117,9 @@
             getCategoryList()
 
 
+            const parent_id = globalUtils.getQueryString('parent_id')
+            if (parent_id) formdata.parent_id = +parent_id
+
             const id = globalUtils.getQueryString('id')
             if (id) {
                 axios({
@@ -148,7 +152,9 @@
                         cache: false,
                         dataType: 'json',
                         success: function (res) {
-                           ElementPlus.ElMessage.success('更新成功')
+                            if (res.code !== 200) return
+                            ElementPlus.ElMessage.success('更新成功')
+                            location.href="/admin/category/list"
                         },
                         error: function (err) {
                             ElementPlus.ElMessage.error(err)

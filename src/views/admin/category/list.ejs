@@ -26,7 +26,13 @@
 
                 <el-table-column prop="sort" label="排序" width="80"></el-table-column>
                 
-
+                <el-table-column prop="type" label="类型" width="100">
+                    <template #default="scope">
+                        <span v-if="scope.row.type === 1">频道</span>
+                        <span v-else-if="scope.row.type === 2">列表</span>
+                        <span v-else-if="scope.row.type === 3">单页</span>
+                    </template>
+                </el-table-column>
                 
                 <el-table-column prop="model_id" label="所属模型" width="100"></el-table-column>
 
@@ -38,6 +44,7 @@
                     <template v-slot="scope">
                         <el-button><a :href="`/admin/category/add?id=${scope.row.id}`">编辑</a></el-button>
                         <el-button disabled>删除</el-button>
+                        <el-button v-if="scope.row.type === 1"><a :href="`/admin/category/add?parent_id=${scope.row.id}`">添加子分类</a></el-button>
                     </template>
                 </el-table-column>
             </el-table>
