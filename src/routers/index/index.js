@@ -1,51 +1,27 @@
 const Router = require('koa-router');
 const router = new Router()
 
-const sqlApi = require('../../lib/db-utils')
-const arrayToTree = require('../../plugins/arrayToTree.js')
-
-let menus 
-sqlApi.selectMenus().then(res => {
-    menus = arrayToTree(res, 0)
-})
-
-const templates = ['default', 'college']
-const template = templates[1]
+const IndexController = require('../../controller/index/index.js')
 
 router.get('/', async ctx => {
     ctx.redirect('/home')
 })
 
-router.get('/home', async ctx => {
-    await ctx.render(`index/${template}/home/index`, { template, menus })
-})
+router.get('/home', IndexController.home)
 
-router.get('/category/list', async ctx => {
-    await ctx.render(`index/${template}/category/list`, { template, menus })
-})
+router.get('/category/list', IndexController.categoryList)
 
-router.get('/article/list', async ctx => {
-    await ctx.render(`index/${template}/article/list`, { template, menus })
-})
+router.get('/article/list', IndexController.articleList)
 
-router.get('/article/details', async ctx => {
-    await ctx.render(`index/${template}/article/details`, { template, menus })
-})
+router.get('/article/details', IndexController.articleDetails)
 
-router.get('/uploads/list', async ctx => {
-    await ctx.render(`index/${template}/uploads/list`, { template, menus })
-})
-router.get('/uploads/details', async ctx => {
-    await ctx.render(`index/${template}/uploads/details`, { template, menus })
-})
+router.get('/uploads/list', IndexController.uploadsList)
+router.get('/uploads/details', IndexController.uploadsDetails)
 
 /**
  * 资源页
  */
-router.get('/resource/list', async ctx => {
-    await ctx.render(`index/${template}/resource/list`, { template, menus })
-})
-router.get('/resource/details', async ctx => {
-    await ctx.render(`index/${template}/resource/details`, { template, menus })
-})
+router.get('/resource/list', IndexController.resourceList)
+router.get('/resource/details', IndexController.resourceDetails)
+
 module.exports = router
