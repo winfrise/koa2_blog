@@ -30,41 +30,18 @@
             <div class="nav" id="navMenu">
                 <ul>
                     <li data-id="22"><a href="/">首页</a></li>
-                    <li data-id="4317"><a href="/xyjj/">学院概况</a>
+                    <% menus.forEach(function(item){ %>
+                    <li data-id="4317"><%=item.type%><a href="<%= (item.type == 1 ? '/category' : item.type == 2 ? '/list' : '/page') %>?id=<%=item.id%>"><%=item.name %></a>
+                        <% if(item.children && item.children.length > 0) {%>
                         <ul>
-                            <li data-id="4331"><a href="/xyjj/">学院简介</a></li>
-                            <li data-id="4332"><a href="/xyld/">学院领导</a></li>
-                            <li data-id="4333"><a href="/xyfj/">校园风景</a></li>
-                            <li data-id="4334"><a href="/lsyg/">历史沿革</a></li>
-                            <li data-id="2298"><a href="/lxwm/">联系我们</a></li>
+                            <% item.children.forEach(function(childItem){ %>
+                            <li data-id="4331"><a href="/xyjj/"><%=childItem.name%></a></li>
+                            <% }) %>
                         </ul>
+                        <% } %>
                     </li>
-                    <li data-id="4316"><a href="/xydt/">新闻资讯</a>
-                        <ul>
-                            <li data-id="4324"><a href="/xydt/">学院动态</a></li>
-                            <li data-id="4325"><a href="/xzjz/">学术讲座</a></li>
-                            <li data-id="4326"><a href="/tzgg/">通知公告</a></li>
-                        </ul>
-                    </li>
-                    <li data-id="4318"><a href="/zsc/">招生就业</a>
-                        <ul>
-                            <li data-id="4335"><a href="/zsc/">招生处</a></li>
-                        </ul>
-                    </li>
-                    <li data-id="4319"><a href="/tppd/">视频图片</a>
-                        <ul>
-                            <li data-id="4337"><a href="/tppd/">图片频道</a></li>
-                            <li data-id="4338"><a href="/sppda/">视频频道</a></li>
-                            <li data-id="4339"><a href="/xzzx/">下载中心</a></li>
-                        </ul>
-                    </li>
-                    <li data-id="4321"><a href="/ztpd/">专题专栏</a>
-                        <ul>
-                            <li data-id="4340"><a href="/ztpd/">专题频道</a></li>
-                            <li data-id="4341"><a href="/hzjl/">合作交流</a></li>
-                            <li data-id="4342"><a href="/ggfw/">公共服务</a></li>
-                        </ul>
-                    </li>
+                    <% }) %>
+
                 </ul>
             </div>
         </div>
@@ -134,9 +111,6 @@
         position: relative;
     }
 
-    /*.slideBox .hd{ height:15px; overflow:hidden; position:absolute; left:46.5%; bottom:5px; z-index:1;width:100%; }
-.slideBox .hd ul{ overflow:hidden; zoom:1; float:left;  }
-.slideBox .hd ul li{margin-right:10px!important; border-radius: 15px;float:left; margin-right:2px;  width:12px; height:12px; line-height:14px; text-align:center; background:#fff; cursor:pointer; }*/
     .slideBoxBanner .hd {
         width: 100%;
         position: absolute;

@@ -5,6 +5,7 @@ const sqlApi = require('../../lib/db-utils.js')
 const getFolderFiles = require('../../plugins/getFolderFiles.js')
 const path = require('path')
 const fs = require('fs')
+const arrayToTree = require('../../plugins/arrayToTree.js')
 
 exports.login = async ctx => {
     let { username, password } = ctx.request.body
@@ -39,23 +40,6 @@ exports.menuListGet = async ctx => {
 }
 
 exports.categoryListGet = async ctx => {
-    function arrayToTree(arr, parent_id) {
-        var tree = [];
-        for (var i = 0; i < arr.length; i++) {
-            if (arr[i].parent_id === parent_id) {
-                const children = arrayToTree(arr, arr[i].id)
-                var node = {
-                    ...arr[i]
-                };
-                if (children.length > 0) {
-                    node.children = children
-                }
-                tree.push(node);
-            }
-        }
-        return tree;
-    }
-    
     const result = await selectCategorys()
     const tree = arrayToTree(result, 0)
 

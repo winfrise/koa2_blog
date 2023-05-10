@@ -2,10 +2,11 @@ const Router = require('koa-router');
 const router = new Router()
 
 const sqlApi = require('../../lib/db-utils')
+const arrayToTree = require('../../plugins/arrayToTree.js')
 
 let menus 
 sqlApi.selectMenus().then(res => {
-    menus = res
+    menus = arrayToTree(res, 0)
 })
 
 const templates = ['default', 'college']
