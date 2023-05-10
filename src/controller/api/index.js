@@ -97,6 +97,17 @@ exports.categoryFind = async ctx => {
     }
 } 
 
+exports.categoryDelete = async ctx => {
+    const { id } = ctx.request.body
+    const result = await sqlApi.deleteCategoryById(id)
+
+    ctx.body = {
+        code: 200,
+        message: '成功',
+        data: {}
+    }
+}
+
 // 获取模型列表
 exports.modelsListGet = async ctx => {
     const result = await selectModels()

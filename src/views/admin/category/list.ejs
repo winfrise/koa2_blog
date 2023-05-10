@@ -43,7 +43,7 @@
                 <el-table-column label="操作">
                     <template v-slot="scope">
                         <el-button><a :href="`/admin/category/add?id=${scope.row.id}`">编辑</a></el-button>
-                        <el-button disabled>删除</el-button>
+                        <el-button :disabled="scope.row.children.length > 0" @click="handleDelete(scope.row)">删除</el-button>
                         <el-button v-if="scope.row.type === 1"><a :href="`/admin/category/add?parent_id=${scope.row.id}`">添加子分类</a></el-button>
                         <el-button v-else><a :href="`/admin/article/add?category_id=${scope.row.id}`">添加文章</a></el-button>
                     </template>
@@ -59,15 +59,48 @@
     const app = createApp({
         setup() {
             const tableData = ref([])
-            axios({
-                url: "/api/category/list/get",
-                method: "POST",
-                data: { currentPage: 1, pageSize: 100 },
-            }).then(res => {
-                tableData.value = res.data.list || []
-            })
+
+            const getList = () => {
+                axios({
+                    url: "/api/category/list/get",
+                    method: "POST",
+                    data: { currentPage: 1, pageSize: 100 },
+                }).then(res => {
+                    tableData.value = res.data.list || []
+                })
+            }
+            getList()
+
+            const deleteCategory = (id) => {
+                axios({
+                    url: "/api/category/delete",
+                    method: "POST",
+                    data: { id },
+                }).then(res => {
+                    ElementPlus.ElMessage.success('删除成功')
+                    getList()
+                })
+            }
+
+
+            const handleDelete = (row) =>  {
+                ElementPlus.ElMessageBox.confirm(`确定删除名字为<strong>${row.name}</strong>的分类吗`, '删除提醒', {
+                    dangerouslyUseHTMLString: true,
+                    showCancelButton: true,
+                    closeOnPressEscape: false,
+                    closeOnClickModal: false,
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    callback: (action) => {
+                        if (action === 'confirm') {
+                            deleteCategory(row.id)
+                        }
+                    }
+                })
+            }
             return {
-                tableData
+                tableData,
+                handleDelete
             }
         }
     })

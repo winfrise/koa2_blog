@@ -11,6 +11,7 @@ router.post('/menu/list/get', ApiController.menuListGet)
 router.post('/category/list/get', ApiController.categoryListGet)
 router.post('/category/add', ApiController.categoryAdd)
 router.post('/category/find', ApiController.categoryFind)
+router.post('/category/delete', ApiController.categoryDelete)
 
 router.post('/models/list/get', ApiController.modelsListGet)
 

@@ -4,7 +4,8 @@ function arrayToTree(arr, parent_id) {
         if (arr[i].parent_id === parent_id) {
             const children = arrayToTree(arr, arr[i].id)
             var node = {
-                ...arr[i]
+                ...arr[i],
+                children: []
             };
             if (children.length > 0) {
                 node.children = children

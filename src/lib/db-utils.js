@@ -33,6 +33,11 @@ exports.updateCategory = (values) => {
     return query(_sql, [values.type, values.name, values.description, values.sort, values.is_menu, values.parent_id, values.model_id, values.update_time, values.id])
 }
 
+exports.deleteCategoryById = (id) => {
+    let _sql = `delete from le_category where id="${id}";`
+    return query( _sql )
+}
+
 // 查询模型列表
 exports.selectModels = () => {
     let _sql = `select * from le_models order by id desc`
