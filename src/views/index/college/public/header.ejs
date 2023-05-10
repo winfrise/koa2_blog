@@ -31,7 +31,7 @@
                 <ul>
                     <li data-id="22"><a href="/">首页</a></li>
                     <% menus.forEach(function(item){ %>
-                    <li data-id="4317"><%=item.type%><a href="<%= (item.type == 1 ? '/category' : item.type == 2 ? '/list' : '/page') %>?id=<%=item.id%>"><%=item.name %></a>
+                    <li data-id="4317"><%=item.type%><a href="<%= (item.type == 1 ? '/category/list' : item.type == 2 ? '/article/list' : '/page/index') %>?id=<%=item.id%>"><%=item.name %></a>
                         <% if(item.children && item.children.length > 0) {%>
                         <ul>
                             <% item.children.forEach(function(childItem){ %>

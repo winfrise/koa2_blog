@@ -15,6 +15,8 @@ router.get('/article/list', IndexController.articleList)
 
 router.get('/article/details', IndexController.articleDetails)
 
+router.get('/page/index', IndexController.pageIndex)
+
 router.get('/uploads/list', IndexController.uploadsList)
 router.get('/uploads/details', IndexController.uploadsDetails)
 

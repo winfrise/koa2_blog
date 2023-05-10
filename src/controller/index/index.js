@@ -29,6 +29,12 @@ exports.articleDetails = async ctx => {
     await ctx.render(`index/${template}/article/details`, { template, menus:menusTree })
 }
 
+exports.pageIndex = async ctx => {
+    const menus = await sqlApi.selectMenus()
+    const menusTree = arrayToTree(menus, 0)
+    await ctx.render(`index/${template}/page/index`, { template, menus:menusTree })
+}
+
 exports.uploadsList = async ctx => {
     const menus = await sqlApi.selectMenus()
     const menusTree = arrayToTree(menus, 0)
