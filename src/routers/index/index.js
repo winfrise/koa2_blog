@@ -3,7 +3,8 @@ const router = new Router()
 
 const sqlApi = require('../../lib/db-utils')
 
-const template = 'default'
+const templates = ['default', 'college']
+const template = templates[1]
 
 router.get('/', async ctx => {
     ctx.redirect('/home')
@@ -11,7 +12,7 @@ router.get('/', async ctx => {
 
 router.get('/home', async ctx => {
     const menus = await sqlApi.selectMenus()
-    await ctx.render(`index/${template}/home/index`, { menus })
+    await ctx.render(`index/${template}/home/index`, { template, menus })
 })
 
 router.get('/category/list', async ctx => {

@@ -1,15 +1,112 @@
+<!-- <% menus.forEach(function(item){ %>
+    <li class="nav-item"><a class="nav-link" href="">
+            <%= item.name %>
+        </a></li>
+    <% }) %> -->
 
+<!--导航栏-->
 <div class="header">
-    <div class="common-width header-inner">
-        <div class="logo">我的博客</div>
+    <div class="container">
+
+        <div class="row">
+            <div class="col-md-8 pclogo">
+                <a class="logo" href="http://t20047.mbdemo.18inter.com/">
+                    <img src="/upload/images/2022/11/29/51095114516.png" />
+                </a>
+            </div>
+            <div class="col-md-4 visible-md hidden-sm hidden-xs padding-left-100">
+                <div class="ss-box display-inline-block">
+                    <div class="col-md-9 col-sm-9 col-xs-9"><input type="text" class="s-input" placeholder="请输入关键字">
+                    </div>
+                    <div class="col-md-3 col-sm-3 col-xs-3"><button type="submit" class="s-btn"> <i
+                                class="fa fa-search"></i></button> </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
+<div class="nav-bg">
+    <div class="container">
+        <div class="nav" id="navMenu">
+            <ul>
+                <li data-id="22"><a href="/">网站首页</a></li>
+                <li data-id="45"><a href="/xxjjs/">协会介绍</a>
+                    <ul>
+                        <li data-id="227"><a href="/xxjjs/">协会简介</a></li>
+                        <li data-id="2301"><a href="/xyzp/">人才招聘</a></li>
+                        <li data-id="260"><a href="/xkfj/">协会风景</a></li>
+                        <li data-id="247"><a href="/zjwm/">走进我们</a></li>
+                    </ul>
+                </li>
+                <li data-id="3302"><a href="/xktt/">新闻中心</a>
+                    <ul>
+                        <li data-id="2262"><a href="/xktt/">协会头条</a></li>
+                        <li data-id="251"><a href="/mtxw/">通知公告</a></li>
+                        <li data-id="2290"><a href="/ywdt/">活动征集</a></li>
+                    </ul>
+                </li>
+                <li data-id="46"><a href="/zxzc/">协会动态</a>
+                    <ul>
+                        <li data-id="2289"><a href="/zxzc/">最新政策</a></li>
+                        <li data-id="3303"><a href="/flfg/">法律法规</a></li>
+                        <li data-id="2291"><a href="/gggs/">公告公示</a></li>
+                        <li data-id="3304"><a href="/zfgb/">政府公报</a></li>
+                    </ul>
+                </li>
+                <li data-id="222"><a href="/xszz/">政策解读</a>
+                    <ul>
+                        <li data-id="2263"><a href="/xszz/">民生关切</a></li>
+                        <li data-id="2264"><a href="/tczj/">调查征集</a></li>
+                        <li data-id="2295"><a href="/bxwz/">百姓问政</a></li>
+                        <li data-id="2296"><a href="/bltj/">办理统计</a></li>
+                    </ul>
+                </li>
+                <li data-id="248"><a href="/xzzx/">下载中心</a></li>
+                <li data-id="2297"><a href="/spzx/">视频中心</a></li>
+                <li data-id="228"><a href="/ryzz/">荣誉资质</a></li>
+                <li data-id="2298"><a href="/lxwms/">联系我们</a>
+                    <ul>
+                        <li data-id="2300"><a href="/lxwms/">联系我们</a></li>
+                        <li data-id="2299"><a href="/xklyb/">协会留言板</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div class="mask-bg" id="maskBg"></div>
+        <span class="nav-toggle hidden-lg" id="navToggle"><i class="fa fa-bars text-white"></i></span>
+    </div>
+</div>
 
-<div class="nav">
-    <ul class="common-width nav-inner">
-        <% menus.forEach(function(item){ %>
-        <li class="nav-item"><a class="nav-link" href=""><%= item.name %></a></li>
-        <% }) %>
+<div>
+    <!--PC置顶-->
+    <a class="goToTop goToTop2" id="ToTop" href="#" title="返回顶部"></a>
+</div>
+
+
+
+<!--手机端固定-->
+<div class="bg-bottgray position-fixed bott-fixed phoblack">
+    <ul class="text-center backsame">
+        <li class="col-xs-4">
+            <a href="http://t20047.mbdemo.18inter.com/">
+                <i class="fa fa-home"></i>
+                <span>首页</span>
+            </a>
+        </li>
+        <li class="col-xs-4">
+            <a href="/xktt/">
+                <i class="fa fa-users"></i>
+                <span class="text-white font-size-12">协会新闻</span>
+            </a>
+        </li>
+        <li class="col-xs-4">
+            <div class="curpointer goToTop">
+                <a href="#">
+                    <i class="fa fa-caret-square-o-up"></i>
+                    <span>置顶</span>
+                </a>
+            </div>
+        </li>
     </ul>
 </div>

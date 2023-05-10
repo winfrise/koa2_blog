@@ -1,0 +1,253 @@
+<!--导航栏-->
+<div class="topHeader visible-md hidden-sm hidden-xs">
+    <div class="maxWidthIndex">
+        <div class="float-right">
+            <ul>
+                <li class="display-inline-block"><a href="/member/Login/" target="_blank">登录</a></li>
+                <li class="display-inline-block"><a href="/member/Reg/" target="_blank">注册</a></li>
+                <li class="display-inline-block">
+                    <div class="ss-box">
+                        <input type="text" class="s-input" placeholder="请输入关键字">
+                        <button type="submit" class="s-btn">搜索</button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="header">
+    <div class="pclogo">
+        <div class="maxWidthIndex">
+            <div class="maxWidthIndexRow">
+                <a class="logo" href="http://t20036.mbdemo.18inter.com/">
+                    <img src="/upload/images/2022/12/15/51108094807.png" />
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="pcNav">
+        <div class="maxWidthIndex">
+            <div class="nav" id="navMenu">
+                <ul>
+                    <li data-id="22"><a href="/">首页</a></li>
+                    <li data-id="4317"><a href="/xyjj/">学院概况</a>
+                        <ul>
+                            <li data-id="4331"><a href="/xyjj/">学院简介</a></li>
+                            <li data-id="4332"><a href="/xyld/">学院领导</a></li>
+                            <li data-id="4333"><a href="/xyfj/">校园风景</a></li>
+                            <li data-id="4334"><a href="/lsyg/">历史沿革</a></li>
+                            <li data-id="2298"><a href="/lxwm/">联系我们</a></li>
+                        </ul>
+                    </li>
+                    <li data-id="4316"><a href="/xydt/">新闻资讯</a>
+                        <ul>
+                            <li data-id="4324"><a href="/xydt/">学院动态</a></li>
+                            <li data-id="4325"><a href="/xzjz/">学术讲座</a></li>
+                            <li data-id="4326"><a href="/tzgg/">通知公告</a></li>
+                        </ul>
+                    </li>
+                    <li data-id="4318"><a href="/zsc/">招生就业</a>
+                        <ul>
+                            <li data-id="4335"><a href="/zsc/">招生处</a></li>
+                        </ul>
+                    </li>
+                    <li data-id="4319"><a href="/tppd/">视频图片</a>
+                        <ul>
+                            <li data-id="4337"><a href="/tppd/">图片频道</a></li>
+                            <li data-id="4338"><a href="/sppda/">视频频道</a></li>
+                            <li data-id="4339"><a href="/xzzx/">下载中心</a></li>
+                        </ul>
+                    </li>
+                    <li data-id="4321"><a href="/ztpd/">专题专栏</a>
+                        <ul>
+                            <li data-id="4340"><a href="/ztpd/">专题频道</a></li>
+                            <li data-id="4341"><a href="/hzjl/">合作交流</a></li>
+                            <li data-id="4342"><a href="/ggfw/">公共服务</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="mask-bg" id="maskBg"></div>
+    <span class="nav-toggle hidden-lg" id="navToggle"><i class="fa fa-bars text-white"></i></span>
+</div>
+<script type="text/javascript">
+    var $navToggle = $("#navToggle");//手机端菜单图标
+    var $maskBg = $("#maskBg");//遮挡层
+    var $navMenu = $("#navMenu");
+    $navToggle.on("click", function () {
+        $maskBg.addClass("active");
+        $navMenu.addClass("active");
+    });
+    $maskBg.on("click", function () {
+        $maskBg.removeClass("active");
+        $navMenu.removeClass("active");
+    });
+    $navMenu.children("ul").find("li").InitNav(22, 22);//初始化响应式菜单
+
+    $navMenu = $("#navMenu");
+    $navMenu.find("li[data-id='22']").addClass("current");
+    var $navLis = $navMenu.find("li");
+    var $navLi = $navMenu.find("li[data-id='22']");
+    $navLis.each(function () {
+        var $this = $(this);
+        $this.children("a").on("mouseenter", function () {
+            $navLis.removeClass("current");
+            $this.addClass("current");
+        })
+    });
+    $navMenu.on("mouseleave", function () {
+        $navLis.removeClass("current");
+        $navLi.addClass("current");
+    })
+
+    //搜索
+    $(".s-btn").on("click", function () {
+        var keyword = $(this).parents(".ss-box").find(".s-input").val();
+        if (keyword != "") {
+            location.href = "/Search/?kw=" + keyword;
+        }
+    });
+    $(".s-input").on("keydown", function (event) {
+        var key = event.which;
+        if (key == 13) {
+            var keyword = $(this).parents(".ss-box").find(".s-input").val();
+            if (keyword != "") {
+                location.href = "/Search/?kw=" + keyword;
+            }
+        }
+    });
+
+</script>
+
+
+
+
+
+
+<style>
+    .slideBoxBanner {
+        width: 100%;
+        height: 400px;
+        overflow: hidden;
+        position: relative;
+    }
+
+    /*.slideBox .hd{ height:15px; overflow:hidden; position:absolute; left:46.5%; bottom:5px; z-index:1;width:100%; }
+.slideBox .hd ul{ overflow:hidden; zoom:1; float:left;  }
+.slideBox .hd ul li{margin-right:10px!important; border-radius: 15px;float:left; margin-right:2px;  width:12px; height:12px; line-height:14px; text-align:center; background:#fff; cursor:pointer; }*/
+    .slideBoxBanner .hd {
+        width: 100%;
+        position: absolute;
+        z-index: 1;
+        bottom: 10px;
+        left: 0;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+    }
+
+    .slideBoxBanner .hd ul li {
+        background: #d6d6d6;
+        cursor: pointer;
+        display: inline-block;
+        *display: inline;
+        zoom: 1;
+        width: 10px;
+        height: 10px;
+        margin: 2px;
+        overflow: hidden;
+        filter: alpha(opacity=40);
+        opacity: 0.9;
+        border-radius: 15px;
+    }
+
+    .slideBoxBanner .hd ul li.on {
+        background: #165aa1;
+        color: #fff;
+    }
+
+    .slideBoxBanner .bd {
+        position: relative;
+        height: 100%;
+        z-index: 0;
+    }
+
+    .slideBoxBanner .bd li {
+        zoom: 1;
+        vertical-align: middle;
+    }
+
+    .slideBoxBanner .bd img {
+        width: 100%;
+        height: 400px;
+        display: block;
+    }
+
+    .slideBoxBanner .prev,
+    .slideBoxBanner .next {
+        position: absolute;
+        left: 3%;
+        top: 50%;
+        margin-top: -25px;
+        display: block;
+        width: 40px;
+        height: 40px;
+        filter: alpha(opacity=50);
+        background: rgba(0, 0, 0, .5);
+        text-align: center;
+        line-height: 33px;
+    }
+
+    .slideBoxBanner .prev:hover,
+    .slideBoxBanner .next:hover {
+        background-color: #0b74c3;
+    }
+
+    .slideBoxBanner .next {
+        left: auto;
+        right: 3%;
+        background-position: 8px 5px;
+    }
+
+    .slideBoxBanner .prev:hover,
+    .slideBoxBanner .next:hover {
+        filter: alpha(opacity=100);
+        opacity: 1;
+    }
+
+    .slideBoxBanner .prevStop {
+        display: none;
+    }
+
+    .slideBoxBanner .nextStop {
+        display: none;
+    }
+</style>
+<div class="white-bg">
+    <div id="slideBox" class="slideBoxBanner">
+        <div class="hd">
+            <ul>
+                <li></li>
+                <li></li>
+            </ul>
+        </div>
+        <div class="bd">
+            <ul>
+                <li>
+                    <img src="/upload/images/2022/09/05/51102114251.jpg" />
+                </li>
+                <li>
+                    <img src="/upload/images/2022/09/05/51103114255.jpg" />
+                </li>
+            </ul>
+        </div>
+        <!-- 下面是前/后按钮代码，如果不需要删除即可 -->
+        <a class="prev" href="javascript:void(0)"><img src="/assets/template/<%=template %>/images/arrow_left.png" /></a>
+        <a class="next" href="javascript:void(0)"><img src="/assets/template/<%=template %>/images/arrow_right.png" /></a>
+    </div>
+</div>
+<script type="text/javascript">
+    jQuery(".slideBoxBanner").slide({ mainCell: ".bd ul", autoPlay: true });
+</script>
