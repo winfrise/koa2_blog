@@ -16,7 +16,10 @@
             <span class="main-tab-item">栏目管理</span>
         </ul>
         <div class="layui-tab-content">
-            <el-table :data="tableData" height="100%" row-key="id" border default-expand-all  style="width: 100%">
+            <div style="margin: 15px 0;">
+                <el-button type="primary" plain @click="toggleRowExpand">{{isExpand ? '收起' : '展开'}}行</el-button>
+            </div>
+            <el-table ref="tableRef" :data="tableData" height="100%" row-key="id" border default-expand-all  style="width: 100%">
 
                 <el-table-column prop="name" label="栏目名称" width="200">
                     <template v-slot="scope">{{scope.row.level === 1 ? '├─' : ''}} {{scope.row.name}}</template>
@@ -28,24 +31,28 @@
                 
                 <el-table-column prop="type" label="类型" width="100">
                     <template #default="scope">
-                        <span v-if="scope.row.type === 1">频道</span>
-                        <span v-else-if="scope.row.type === 2">列表</span>
-                        <span v-else-if="scope.row.type === 3">单页</span>
+                        <el-tag type="error" v-if="scope.row.type === 1">频道</el-tag>
+                        <el-tag type="success" v-else-if="scope.row.type === 2">列表</el-tag>
+                        <el-tag type="warning" v-else-if="scope.row.type === 3">单页</el-tag>
                     </template>
                 </el-table-column>
                 
                 <el-table-column prop="model_id" label="所属模型" width="100"></el-table-column>
 
                 <el-table-column prop="address" label="导航显示" width="100">
-                    <template v-slot="scope">{{scope.row.is_menu === 1 ? '是' : '否'}}</template>
+                    <template v-slot="scope">
+                        <el-switch v-model="scope.row.is_menu" active-color="#13ce66" inactive-color="#ff4949">
+                        </el-switch>
+                        <!-- {{scope.row.is_menu === 1 ? '是' : '否'}} -->
+                    </template>
                 </el-table-column>
 
                 <el-table-column label="操作">
                     <template v-slot="scope">
-                        <el-button><a :href="`/admin/category/add?id=${scope.row.id}`">编辑</a></el-button>
-                        <el-button :disabled="scope.row.children.length > 0" @click="handleDelete(scope.row)">删除</el-button>
-                        <el-button v-if="scope.row.type === 1"><a :href="`/admin/category/add?parent_id=${scope.row.id}`">添加子分类</a></el-button>
-                        <el-button v-else><a :href="`/admin/article/add?category_id=${scope.row.id}`">添加文章</a></el-button>
+                        <el-button type="primary" plain><a :href="`/admin/category/add?id=${scope.row.id}`">编辑</a></el-button>
+                        <el-button type="danger" plain :disabled="scope.row.children.length > 0" @click="handleDelete(scope.row)">删除</el-button>
+                        <el-button type="warning" plain v-if="scope.row.type === 1"><a :href="`/admin/category/add?parent_id=${scope.row.id}`">添加子分类</a></el-button>
+                        <el-button type="info" plain v-else><a :href="`/admin/article/add?category_id=${scope.row.id}`">添加文章</a></el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -59,6 +66,8 @@
     const app = createApp({
         setup() {
             const tableData = ref([])
+            const tableRef = ref()
+            const isExpand = ref(true)
 
             const getList = () => {
                 axios({
@@ -98,9 +107,19 @@
                     }
                 })
             }
+
+            const toggleRowExpand = () => {
+                isExpand.value = !isExpand.value
+                tableData.value.forEach(row => {
+                    tableRef.value.toggleRowExpansion(row, isExpand.value)
+                })
+            }
             return {
                 tableData,
-                handleDelete
+                tableRef,
+                handleDelete,
+                toggleRowExpand,
+                isExpand
             }
         }
     })
