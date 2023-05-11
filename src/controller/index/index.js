@@ -20,7 +20,16 @@ exports.categoryList = async ctx => {
 exports.articleList = async ctx => {
     const menus = await sqlApi.selectMenus()
     const menusTree = arrayToTree(menus, 0)
-    await ctx.render(`index/${template}/article/list`, { template, menus:menusTree })
+
+    let currentPage = 1
+    let pageSize = 10
+    const { id, page_size, current_page } = ctx.request.query
+
+    if (current_page) currentPage = current_page
+    if (page_size) pageSize = page_size
+
+    const list = await sqlApi.selectArticles({ category_id: id, currentPage , pageSize})
+    await ctx.render(`index/${template}/article/list`, { template, menus:menusTree, list: list })
 }
 
 exports.articleDetails = async ctx => {

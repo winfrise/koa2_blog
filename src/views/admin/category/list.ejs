@@ -19,7 +19,7 @@
             <div style="margin: 15px 0;">
                 <el-button type="primary" plain @click="toggleRowExpand">{{isExpand ? '收起' : '展开'}}行</el-button>
             </div>
-            <el-table ref="tableRef" :data="tableData" height="100%" row-key="id" border default-expand-all  style="width: 100%">
+            <el-table ref="tableRef" :data="tableData" height="100%" row-key="id" border :default-expand-all="false"  style="width: 100%">
 
                 <el-table-column prop="name" label="栏目名称" width="200">
                     <template v-slot="scope">{{scope.row.level === 1 ? '├─' : ''}} {{scope.row.name}}</template>
@@ -65,7 +65,7 @@
         setup() {
             const tableData = ref([])
             const tableRef = ref()
-            const isExpand = ref(true)
+            const isExpand = ref(false)
 
             const getList = () => {
                 axios({

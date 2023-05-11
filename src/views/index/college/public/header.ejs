@@ -28,14 +28,17 @@
     <div class="pcNav">
         <div class="maxWidthIndex">
             <div class="nav" id="navMenu">
-                <ul>
-                    <li data-id="22"><a href="/">首页</a></li>
+                <ul style="font-size:0;">
+                    <li><a href="/">首页</a></li>
                     <% menus.forEach(function(item){ %>
-                    <li data-id="4317"><%=item.type%><a href="<%= (item.type == 1 ? '/category/list' : item.type == 2 ? '/article/list' : '/page/index') %>?id=<%=item.id%>"><%=item.name %></a>
+                    <li>
+                        <a href="<%= (item.type == 1 ? '/category/list' : item.type == 2 ? '/article/list' : '/page/index') %>?id=<%=item.id%>"><%=item.name %></a>
                         <% if(item.children && item.children.length > 0) {%>
                         <ul>
                             <% item.children.forEach(function(childItem){ %>
-                            <li data-id="4331"><a href="/xyjj/"><%=childItem.name%></a></li>
+                            <li>
+                                <a href="<%= (childItem.type == 1 ? '/category/list' : childItem.type == 2 ? '/article/list' : '/page/index') %>?id=<%=item.id%>"><%=childItem.name%></a>
+                            </li>
                             <% }) %>
                         </ul>
                         <% } %>
