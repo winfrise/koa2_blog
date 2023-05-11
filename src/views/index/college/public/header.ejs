@@ -37,7 +37,7 @@
                         <ul>
                             <% item.children.forEach(function(childItem){ %>
                             <li>
-                                <a href="<%= (childItem.type == 1 ? '/category/list' : childItem.type == 2 ? '/article/list' : '/page/index') %>?id=<%=item.id%>"><%=childItem.name%></a>
+                                <a href="<%= (childItem.type == 1 ? '/category/list' : childItem.type == 2 ? '/article/list' : '/page/index') %>?id=<%=childItem.id%>"><%=childItem.name%></a>
                             </li>
                             <% }) %>
                         </ul>

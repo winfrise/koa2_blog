@@ -1,3 +1,4 @@
+const dayjs = require('dayjs')
 const sqlApi = require('../../lib/db-utils')
 const arrayToTree = require('../../plugins/arrayToTree.js')
 
@@ -28,7 +29,10 @@ exports.articleList = async ctx => {
     if (current_page) currentPage = current_page
     if (page_size) pageSize = page_size
 
-    const list = await sqlApi.selectArticles({ category_id: id, currentPage , pageSize})
+    let list = await sqlApi.selectArticles({ category_id: id, currentPage, pageSize })
+    list = list.map(item => {
+        return { ...item, time: dayjs(item.update_time * 1000 || item.create_time * 1000).format('YYYY-MM-DD HH:mm:ss')}
+    })
     await ctx.render(`index/${template}/article/list`, { template, menus:menusTree, list: list })
 }
 

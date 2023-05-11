@@ -69,7 +69,7 @@
                 <tiny-editor v-model="formdata.content"></tiny-editor>
             </el-form-item>
             <el-form-item prop="create_time" label="添加时间">
-                <el-date-picker v-model="formdata.create_time" type="date" value-format="X" format="YYYY/MM/DD" placeholder="Pick a date" style="width: 100%" />
+                <el-date-picker v-model="formdata.time" type="datetime" value-format="X" placeholder="选择日期时间"></el-date-picker>
             </el-form-item>
             <el-form-item prop="hits" label="点击量">
                 <el-input v-model="formdata.hits" />
@@ -88,6 +88,7 @@
         const app = createApp({
             setup() {
                 const formdata = reactive({
+                    id: null,
                     category_id: null,
                     title: '',
                     keywords: '',
@@ -98,7 +99,7 @@
                     is_recommend: '',
                     is_top: '',
                     is_show: '',
-                    create_time: null,
+                    time: null,
                     hits: 0,
                     url: '',
                     content: ''
@@ -127,16 +128,23 @@
                     is_recommend: [{ required: true, message: '请选择是否支持评论', trigger: 'change' }],
                     is_top: [{ required: true, message: '请选择是否置顶', trigger: 'change' }],
                     is_show: [{ required: true, message: '请选择是否显示', trigger: 'change' }],
-                    create_time: [{ required: true, message: '请选择创建时间', trigger: 'change' }]
+                    time: [{ required: true, message: '请选择创建时间', trigger: 'change' }]
                 }
                 const formRef = ref()
                 const submitForm = () => {
                     formRef.value.validate((valid) => {
                         if (!valid) return
 
+                        const params = {...formdata}
+                        params.update_time = params.time
+                        if (!formdata.id) {
+                            params.create_time = params.time
+                        }
+                        delete params.time
+
                         $.ajax({
                             url: '/api/article/insert',
-                            data: { ...formdata },
+                            data: { ...params },
                             type: "POST",
                             cache: false,
                             dataType: 'json',

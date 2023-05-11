@@ -17,7 +17,7 @@
                 <template v-slot="scope">{{dayjs(scope.row.create_time*1000).format('YYYY-MM-DD HH:mm:ss')}}</template>
             </el-table-column>
             <el-table-column prop="update_time" label="更新时间">
-                <template v-slot="scope">{{dayjs(scope.row.update_time*1000).format('YYYY-MM-DD HH:mm:ss')}}</template>
+                <template v-slot="scope">{{scope.row.update_time ? dayjs(scope.row.update_time*1000).format('YYYY-MM-DD HH:mm:ss') : '--'}}</template>
             </el-table-column>
         </el-table>
     </div>
