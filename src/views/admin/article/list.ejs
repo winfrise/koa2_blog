@@ -13,6 +13,7 @@
             <el-table-column prop="id" label="ID" width="180"></el-table-column>
             <el-table-column prop="title" label="标题" width="180"></el-table-column>
             <el-table-column prop="description" label="描述" width="180"></el-table-column>
+            <el-table-column prop="category_id" label="分类" width="180"></el-table-column>
             <el-table-column prop="create_time" label="创建时间">
                 <template v-slot="scope">{{dayjs(scope.row.create_time*1000).format('YYYY-MM-DD HH:mm:ss')}}</template>
             </el-table-column>
