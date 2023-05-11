@@ -38,7 +38,7 @@ exports.articleList = async ctx => {
     if (current_page) currentPage = current_page
     if (page_size) pageSize = page_size
 
-    let list = await sqlApi.selectArticles({ category_id: id, currentPage, pageSize })
+    let list = await sqlApi.selectArticles({ category_id: id, current_page: currentPage, page_size: pageSize })
     list = list.map(item => {
         return { ...item, time: dayjs(item.update_time * 1000 || item.create_time * 1000).format('YYYY-MM-DD HH:mm:ss')}
     })
@@ -57,7 +57,11 @@ exports.articleDetails = async ctx => {
 exports.pageIndex = async ctx => {
     const menus = await sqlApi.selectMenus()
     const menusTree = arrayToTree(menus, 0)
-    await ctx.render(`index/${template}/page/index`, { template, menus:menusTree })
+
+    const {id}= ctx.request.query
+
+    const result = await sqlApi.selectArticles({page_size: 1, current_page: 1, category_id:id})
+    await ctx.render(`index/${template}/page/index`, { template, menus:menusTree,  info: result[0]})
 }
 
 exports.uploadsList = async ctx => {

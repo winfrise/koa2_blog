@@ -64,8 +64,8 @@ exports.selectModels = () => {
 }
 
 // 查询文章列表
-exports.selectArticles = ({ currentPage, pageSize, category_id }) => {
-    let _sql = `select * from le_article ${ category_id ? 'where category_id=' + category_id : ''} order by id desc limit ${(currentPage - 1) * pageSize},${pageSize} ;`
+exports.selectArticles = ({ current_page, page_size, category_id }) => {
+    let _sql = `select * from le_article ${ category_id ? 'where category_id=' + category_id : ''} order by id desc limit ${(current_page - 1) * page_size},${page_size} ;`
     return query(_sql)
 }
 
