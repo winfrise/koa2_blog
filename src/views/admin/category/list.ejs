@@ -31,7 +31,7 @@
                 
                 <el-table-column prop="type" label="类型" width="100">
                     <template #default="scope">
-                        <el-tag type="error" v-if="scope.row.type === 1">频道</el-tag>
+                        <el-tag type="danger" v-if="scope.row.type === 1">频道</el-tag>
                         <el-tag type="success" v-else-if="scope.row.type === 2">列表</el-tag>
                         <el-tag type="warning" v-else-if="scope.row.type === 3">单页</el-tag>
                     </template>
@@ -41,9 +41,7 @@
 
                 <el-table-column prop="address" label="导航显示" width="100">
                     <template v-slot="scope">
-                        <el-switch v-model="scope.row.is_menu" active-color="#13ce66" inactive-color="#ff4949">
-                        </el-switch>
-                        <!-- {{scope.row.is_menu === 1 ? '是' : '否'}} -->
+                        <el-switch :model-value="!!scope.row.is_menu" active-color="#13ce66" inactive-color="#ff4949" @change="onIsMenuChange(scope.row)"></el-switch>
                     </template>
                 </el-table-column>
 
@@ -91,6 +89,17 @@
                 })
             }
 
+            const updateCategory = (options) => {
+                axios({
+                    url: "/api/category/update",
+                    method: "POST",
+                    data: options,
+                }).then(res => {
+                    ElementPlus.ElMessage.success('更新成功')
+                    getList()
+                })
+            }
+
 
             const handleDelete = (row) =>  {
                 ElementPlus.ElMessageBox.confirm(`确定删除名字为<strong>${row.name}</strong>的分类吗`, '删除提醒', {
@@ -114,12 +123,18 @@
                     tableRef.value.toggleRowExpansion(row, isExpand.value)
                 })
             }
+
+            const onIsMenuChange = async (row) => {
+                const isMenu = !row.is_menu
+                await updateCategory({id: row.id, is_menu: isMenu})
+            }
             return {
                 tableData,
                 tableRef,
                 handleDelete,
                 toggleRowExpand,
-                isExpand
+                isExpand,
+                onIsMenuChange
             }
         }
     })

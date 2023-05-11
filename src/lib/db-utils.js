@@ -38,6 +38,20 @@ exports.deleteCategoryById = (id) => {
     return query( _sql )
 }
 
+exports.updateCategoryById = ({ id, is_menu, sort }) => {
+    let field, value
+    if (is_menu !== undefined) {
+        field = 'is_menu'
+        value = is_menu
+    } else {
+        field = 'sort'
+        value = sort
+    }
+    let _sql = `update le_category set ${field}=? where id=${id}`
+    return query(_sql, [value])
+
+}
+
 // 查询模型列表
 exports.selectModels = () => {
     let _sql = `select * from le_models order by id desc`
