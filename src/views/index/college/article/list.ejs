@@ -50,7 +50,7 @@
                 <% list.forEach(item => {%> 
                 <li>
                     <div class="title">
-                        <a href="/news/4505.cshtml" title="<%=item.name%>"><%=item.title%></a>
+                        <a href="/article/details?id=<%=item.id%>" title="<%=item.name%>"><%=item.title%></a>
                     </div>
                     <div class="introduct text-gray">
                         <%=item.description%>

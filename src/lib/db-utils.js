@@ -16,6 +16,11 @@ exports.selectCategorys = () => {
     return query(_sql)
 }
 
+exports.selectChildCategoryById = ({page_size, current_page,  id}) => {
+    let _sql = `select * from le_category where parent_id=${id} order by id desc limit ${(current_page - 1) * page_size},${page_size} `
+    return query(_sql)
+}
+
 // 通过id查找分类
 exports.findCategoryById = (id) => {
     let _sql = `select * from le_category where id="${id}";`
@@ -61,7 +66,6 @@ exports.selectModels = () => {
 // 查询文章列表
 exports.selectArticles = ({ currentPage, pageSize, category_id }) => {
     let _sql = `select * from le_article ${ category_id ? 'where category_id=' + category_id : ''} order by id desc limit ${(currentPage - 1) * pageSize},${pageSize} ;`
-    console.log(_sql)
     return query(_sql)
 }
 
@@ -69,6 +73,11 @@ exports.insertArticle = (values) => {
     let _sql = "insert into le_article set category_id=?,title=?,keywords=?,description=?,image_url=?,is_recommend=?,is_top=?,is_show=?,create_time=?,hits=?,url=?,content=?"
     return query(_sql, [values.category_id, values.title, values.keywords, values.description, values.image_url, values.is_recommend, values.is_top, values.is_show, values.create_time, values.hits, values.url, values.content])
 
+}
+
+exports.findArticleById = (id) =>  {
+    let _sql = `select * from le_article where id=${id}`
+    return query(_sql)
 }
 
 /**

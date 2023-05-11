@@ -15,7 +15,16 @@ exports.home = async ctx => {
 exports.categoryList = async ctx => {
     const menus = await sqlApi.selectMenus()
     const menusTree = arrayToTree(menus, 0)
-    await ctx.render(`index/${template}/category/list`, { template, menus:menusTree })
+
+    let pageSize = 10
+    let currentPage = 1
+    const { id, page_size, current_page } = ctx.request.query
+    page_size && (pageSize = page_size)
+    current_page && (currentPage = current_page)
+
+
+    const result = await sqlApi.selectChildCategoryById({page_size: pageSize, current_page: currentPage, id})
+    await ctx.render(`index/${template}/category/list`, { template, menus:menusTree, list: result })
 }
 
 exports.articleList = async ctx => {
@@ -39,7 +48,10 @@ exports.articleList = async ctx => {
 exports.articleDetails = async ctx => {
     const menus = await sqlApi.selectMenus()
     const menusTree = arrayToTree(menus, 0)
-    await ctx.render(`index/${template}/article/details`, { template, menus:menusTree })
+
+    const {id} = ctx.request.query
+    const result = await sqlApi.findArticleById(id)
+    await ctx.render(`index/${template}/article/details`, { template, menus:menusTree, info:result[0] })
 }
 
 exports.pageIndex = async ctx => {
