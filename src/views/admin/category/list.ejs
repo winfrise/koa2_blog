@@ -7,6 +7,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Category List</title>
     <% include ../public/head %>
+    <style>
+        .row-edit-input {
+            margin-right: 10px;
+        }
+        .row-edit-input .el-input__inner {
+            height: 22px;
+            text-align: center;
+        }
+        .column-box {
+            display: flex;
+            align-items: center;
+        }
+    </style>
 </head>
 
 <body>
@@ -19,7 +32,7 @@
             <div style="margin: 15px 0;">
                 <el-button type="primary" plain @click="toggleRowExpand">{{isExpand ? '收起' : '展开'}}行</el-button>
             </div>
-            <el-table ref="tableRef" :data="tableData" height="100%" row-key="id" border :default-expand-all="false"  style="width: 100%">
+            <el-table ref="tableRef" :data="tableData"  style="width: 100%" height="100%" row-key="id" border :default-expand-all="false" @cell-mouse-enter="onCellMouseEnter" @cell-mouse-leave="onCellMouseLeave">
 
                 <el-table-column prop="name" label="栏目名称" width="200">
                     <template v-slot="scope">{{scope.row.level === 1 ? '├─' : ''}} {{scope.row.name}}</template>
@@ -27,7 +40,26 @@
 
                 <el-table-column prop="id" label="ID" width="80"></el-table-column>
 
-                <el-table-column prop="sort" label="排序" width="80"></el-table-column>
+                <el-table-column prop="sort" label="排序" width="250">
+                    <template #default="scope">
+                        <div class="column-box">
+                            <div>
+                                <el-input v-model="scope.row.sort_new" class="row-edit-input" v-if="scope.row.sort_edit_able"
+                                    style="width: 80px;"></el-input>
+                                <span v-else style="padding: 4px;">{{scope.row.sort}}</span>
+                            </div>
+                            <div class="edit-btns" v-if="scope.row.sort_edit_btn_show || scope.row.sort_edit_able">
+                                <template v-if="!scope.row.sort_edit_able">
+                                    <el-button size="small" @click="editRowField(scope.row, 'sort')">编辑</el-button>
+                                </template>
+                                <template v-else>
+                                    <el-button size="small" @click="editRowFieldConfirm(scope.row, 'sort', scope.row.sort_new)">完成</el-button>
+                                    <el-button size="small" @click="editRowFieldCancel(scope.row, 'sort')">取消</el-button>
+                                </template>
+                            </div>
+                        </div>
+                    </template>
+                </el-table-column>
                 
                 <el-table-column prop="type" label="类型" width="100">
                     <template #default="scope">
@@ -128,13 +160,42 @@
                 const isMenu = !row.is_menu
                 await updateCategory({id: row.id, is_menu: isMenu})
             }
+
+            const editRowField = (row, field) => {
+                row[`${field}_edit_able`] = true
+                row[`${field}_new`] = row[field]
+            }
+            const editRowFieldConfirm = async (row, field, value) => {
+                await updateCategory({ id: row.id, [field]: value })
+                row[`${field}_edit_able`] = false
+            }
+            const editRowFieldCancel = (row, field) => {
+                row[`${field}_edit_able`] = false
+            }
+
+            const onCellMouseEnter = (row, column, cell) => {
+                if (column.label === '排序') {
+                    row.sort_edit_btn_show = true
+                }
+            }
+
+            const onCellMouseLeave = (row, column) => {
+                if (column.label === '排序') {
+                    row.sort_edit_btn_show = false
+                }
+            }
             return {
                 tableData,
                 tableRef,
                 handleDelete,
                 toggleRowExpand,
                 isExpand,
-                onIsMenuChange
+                onIsMenuChange,
+                editRowField,
+                editRowFieldConfirm,
+                editRowFieldCancel,
+                onCellMouseEnter,
+                onCellMouseLeave
             }
         }
     })
