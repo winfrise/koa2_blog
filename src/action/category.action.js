@@ -3,7 +3,7 @@ const DB = new Mysql('category');
 const BaseAction = require('./base.action.class')
 const arrayToTree = require('../plugins/arrayToTree')
 
-class ModelAction extends BaseAction {
+class CategoryAction extends BaseAction {
     
     constructor(db) {
         super(db)
@@ -15,4 +15,4 @@ class ModelAction extends BaseAction {
 }
 
 
-module.exports = new ModelAction(DB)
+module.exports = new CategoryAction(DB)

@@ -53,50 +53,51 @@ exports.categoryTree = async ctx => {
     }
 }
 
-// exports.categoryAdd = async ctx => {
-//     const { id, type, name, description, sort, is_menu, parent_id, model_id } = ctx.request.body
-//     const data = { type, name, description, sort, is_menu, parent_id, model_id, id }
-//     const now_time = Math.ceil(Date.now() / 1000)
-//     try {
-//         if (id) {
-//             console.log('update Category')
-//             await sqlApi.updateCategory({ ...data, update_time: now_time })
-//         } else {
-//             console.log('insert Category')
-//             await sqlApi.insertCategory({ ...data, create_time: now_time, update_time: now_time })
-//         }
-//         ctx.body = {
-//             code: 200,
-//             message: '成功',
-//             data: {
+exports.categoryAdd = async ctx => {
+    const { id, type, name, description, sort, is_menu, parent_id, model_id } = ctx.request.body
+    const data = { type, name, description, sort, is_menu, parent_id, model_id, id }
+    const now_time = Math.ceil(Date.now() / 1000)
+    try {
+        if (id) {
+            await categoryAction.edit({ ...data, update_time: now_time })
+        } else {
+            delete data.id
+            await categoryAction.add({ ...data, create_time: now_time, update_time: now_time })
+        }
+        ctx.body = {
+            code: 200,
+            msg: '成功',
+            data: {
 
-//             }
-//         }
-//     } catch (e) {
-//         ctx.body = {
-//             code: 5001
-//         }
-//     }
+            }
+        }
+    } catch (e) {
+        console.error(e)
+        ctx.body = {
+            code: 5001,
+            msg: '错误'
+        }
+    }
 
-// }
+}
 
-// exports.categoryFind = async ctx => {
-//     const { id } = ctx.request.body
-//     const result = await sqlApi.findCategoryById(id)
-//     if (!result) {
-//         ctx.body = {
-//             code: 200,
-//             message: '未查询到',
-//             data: {}
-//         }
-//         return
-//     }
-//     ctx.body = {
-//         code: 200,
-//         message: '成功',
-//         data: result[0]
-//     }
-// } 
+exports.categoryFind = async ctx => {
+    const { id } = ctx.request.body
+    const result = await categoryAction.getRow({id})
+    if (!result) {
+        ctx.body = {
+            code: 200,
+            message: '未查询到',
+            data: {}
+        }
+        return
+    }
+    ctx.body = {
+        code: 200,
+        message: '成功',
+        data: result
+    }
+} 
 
 // exports.categoryDelete = async ctx => {
 //     const { id } = ctx.request.body
@@ -109,16 +110,20 @@ exports.categoryTree = async ctx => {
 //     }
 // }
 
-// exports.categoryUpdate = async ctx => {
-//     const { id, is_menu, sort } = ctx.request.body
-//     await sqlApi.updateCategoryById({id, is_menu, sort})
+exports.categoryUpdate = async ctx => {
+    const { id, is_menu, sort } = ctx.request.body
+    const rowInfo = {}
+    if (is_menu !== undefined) rowInfo.is_menu = is_menu
+    if (sort !== undefined) rowInfo.sort = sort
+    // await sqlApi.updateCategoryById({id, is_menu, sort})
+    await categoryAction.edit({id}, rowInfo)
 
-//     ctx.body = {
-//         code: 200,
-//         message: '成功',
-//         data: {}
-//     }
-// }
+    ctx.body = {
+        code: 200,
+        message: '成功',
+        data: {}
+    }
+}
 
 // 获取模型列表
 exports.modelsListGet = async ctx => {

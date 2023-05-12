@@ -9,10 +9,10 @@ router.post('/login', ApiController.login)
 router.post('/menu/list/get', ApiController.menuListGet)
 
 router.post('/category/list/tree', ApiController.categoryTree)
-// router.post('/category/add', ApiController.categoryAdd)
-// router.post('/category/find', ApiController.categoryFind)
+router.post('/category/add', ApiController.categoryAdd)
+router.post('/category/find', ApiController.categoryFind)
 // router.post('/category/delete', ApiController.categoryDelete)
-// router.post('/category/update', ApiController.categoryUpdate)
+router.post('/category/update', ApiController.categoryUpdate)
 
 router.post('/models/list/get', ApiController.modelsListGet)
 

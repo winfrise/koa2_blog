@@ -17,7 +17,7 @@ class BaseAction {
    * @returns {Promise<*>} 返回插入ID
    */
   async add (info) {
-    return await this.Model.add(info)
+    return await this.Model.insert(info)
   }
 
   /**
@@ -71,7 +71,7 @@ class BaseAction {
    * @returns {Promise<*>}
    */
   async getRow (info) {
-    return await this.Model.getRow(info)
+    return await this.Model.fetchRow(info)
   }
 
   /**
