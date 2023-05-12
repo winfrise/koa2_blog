@@ -35,7 +35,7 @@
             <el-table ref="tableRef" :data="tableData"  style="width: 100%" height="100%" row-key="id" border :default-expand-all="false" @cell-mouse-enter="onCellMouseEnter" @cell-mouse-leave="onCellMouseLeave">
 
                 <el-table-column prop="name" label="栏目名称" width="200">
-                    <template v-slot="scope">{{scope.row.level === 1 ? '├─' : ''}} {{scope.row.name}}</template>
+                    <template v-slot="scope"> {{scope.row.name}}</template>
                 </el-table-column>
 
                 <el-table-column prop="id" label="ID" width="80"></el-table-column>
@@ -80,7 +80,7 @@
                 <el-table-column label="操作">
                     <template v-slot="scope">
                         <el-button type="primary" plain><a :href="`/admin/category/add?id=${scope.row.id}`">编辑</a></el-button>
-                        <el-button type="danger" plain :disabled="scope.row.children.length > 0" @click="handleDelete(scope.row)">删除</el-button>
+                        <el-button type="danger" plain :disabled="scope.row.children" @click="handleDelete(scope.row)">删除</el-button>
                         <el-button type="warning" plain v-if="scope.row.type === 1"><a :href="`/admin/category/add?parent_id=${scope.row.id}`">添加子分类</a></el-button>
                         <el-button type="info" plain v-else><a :href="`/admin/article/add?category_id=${scope.row.id}`">添加文章</a></el-button>
                     </template>
@@ -101,7 +101,7 @@
 
             const getList = () => {
                 axios({
-                    url: "/api/category/list/get",
+                    url: "/api/category/list/tree",
                     method: "POST",
                     data: { currentPage: 1, pageSize: 100 },
                 }).then(res => {

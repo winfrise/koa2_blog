@@ -106,7 +106,7 @@
             const categoryList = ref([])
             const getCategoryList = () => {
                 $.ajax({
-                    url: '/api/category/list/get',
+                    url: '/api/category/list/tree',
                     type: 'post',
                     dataType: 'json',
                     success: (res) => {

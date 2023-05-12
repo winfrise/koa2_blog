@@ -4,6 +4,8 @@ const fs = require('fs')
 const arrayToTree = require('../../plugins/arrayToTree.js')
 
 const adminAction = require('../../action/admin.action.js')
+const modelAction = require('../../action/model.action.js')
+const categoryAction = require('../../action/category.action.js')
 
 exports.login = async ctx => {
     let { username, password } = ctx.request.body
@@ -38,8 +40,8 @@ exports.menuListGet = async ctx => {
 
 }
 
-exports.categoryListGet = async ctx => {
-    const result = await cagegoryAction.getTreeCategory()
+exports.categoryTree = async ctx => {
+    const result = await categoryAction.getTree()
     const tree = arrayToTree(result, 0)
 
     ctx.body = {
@@ -118,17 +120,17 @@ exports.categoryListGet = async ctx => {
 //     }
 // }
 
-// // 获取模型列表
-// exports.modelsListGet = async ctx => {
-//     const result = await selectModels()
-//     ctx.body = {
-//         code: 200,
-//         message: '成功',
-//         data: {
-//             list: result
-//         }
-//     }
-// }
+// 获取模型列表
+exports.modelsListGet = async ctx => {
+    const result = await modelAction.getAll()
+    ctx.body = {
+        code: 200,
+        message: '成功',
+        data: {
+            list: result
+        }
+    }
+}
 
 // // 获取文章列表
 // exports.articleListGet = async ctx => {
