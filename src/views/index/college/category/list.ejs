@@ -23,7 +23,11 @@
             视频图片
         </div>
         <div class="sub-nav" id="subNav">
-            <ul><li data-id="4337"><a href="/tppd/">图片频道</a></li><li data-id="4338"><a href="/sppda/">视频频道</a></li><li data-id="4339"><a href="/xzzx/">下载中心</a></li></ul>
+            <ul>
+                <% child_categories.forEach(item=> { %>
+                <li><a href="/article/list?id=<%=item.id%>"><%=item.name%></a></li>
+                <% }) %>
+            </ul>
         </div>
     </div>
     <script type="text/javascript">
@@ -33,46 +37,45 @@
             </div>
             <div class="col-md-9 col-sm-8 col-xs-12">
                 <div class="all-Breadcrumb">
-                    <div class="float-left visible-md hidden-sm hidden-xs">图片频道</div>
+                    <div class="float-left visible-md hidden-sm hidden-xs"><%=current_category.name%></div>
                     <div class="float-right">
+
+
     <ul class="breadcrumb">
-        <li><a href="http://t20036.mbdemo.18inter.com/"><i class="fa fa-home"></i><span> 首页</span></a></li>
-            <li><a href="/tppd/">视频图片</a></li>
-            <li><a href="/tppd/">图片频道</a></li>
+        <li><a href="/"><i class="fa fa-home"></i><span> 首页</span></a></li>
+        <li><a href="#"><%=current_category.name %></a></li>
     </ul>
 
     </div>
                 </div>
                 <div class="product-list images-list imgae-same-size margin-top-20">
+                    <% if(articles.length > 0) { %>
                     <ul class="marginAuto-15">
-                            <% list.forEach(item => { %>
-                                <li class="col-md-6 col-sm-6 col-xs-6 margin-bottom-20 item text-center">
-                                    <a href="/article/list?id=<%=item.id%>">
-                                        <div class="boxs">
-                                            <div class="imgHover"><img src="<%=item.image_url%>"></div>
-                                            <div class="title">
-                                                <%=item.name%>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                            <% }) %>
+                        <% articles.forEach(item=> { %>
+                        <li class="col-md-6 col-sm-6 col-xs-6 margin-bottom-20 item text-center">
+                            <a href="/article/list?id=<%=item.id%>">
+                                <div class="boxs">
+                                    <div class="imgHover"><img src="<%=item.image_url%>"></div>
+                                    <div class="title">
+                                        <%=item.name%>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <% }) %>
                     </ul>
+                    <% } else {%>
+                        <div class="no-data">暂无数据</div>
+                    <% } %>
                 </div>
                 
         <div class="text-center padding-20">
             <ul class="pagination">
-                        <li class="disabled">
-                            <a>&laquo;</a>
-                        </li>
-                        <li class=active>
-                            <a href="/tppd/">1</a></li>
-                            <li class="disabled">
-                                <a>&raquo;</a>
-                            </li>
-    
-        </ul>
-    </div>
+                <li class="disabled"><a>&laquo;</a></li>
+                <li class=active><a href="/tppd/">1</a></li>
+                <li class="disabled"><a>&raquo;</a></li>
+            </ul>
+        </div>
     
             </div>
         </div>

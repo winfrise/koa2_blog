@@ -19,9 +19,9 @@
                 </div>
                 <div class="sub-nav" id="subNav">
                     <ul>
-                        <li data-id="4324"><a href="/xydt/">学院动态</a></li>
-                        <li data-id="4325"><a href="/xzjz/">学术讲座</a></li>
-                        <li data-id="4326"><a href="/tzgg/">通知公告</a></li>
+                        <% sibling_categories.forEach(item=> { %>
+                        <li><a href="/article/list?id=<%=item.id%>"><%=item.name%></a></li>
+                        <% }) %>
                     </ul>
                 </div>
             </div>
@@ -32,33 +32,34 @@
         </div>
         <div class="col-md-9 col-sm-8 col-xs-12">
             <div class="all-Breadcrumb">
-                <div class="float-left visible-md hidden-sm hidden-xs">学院动态</div>
+                <div class="float-left visible-md hidden-sm hidden-xs"><%=current_category.name%></div>
                 <div class="float-right">
                     <ul class="breadcrumb">
-                        <li><a href="http://t20036.mbdemo.18inter.com/"><i class="fa fa-home"></i><span>
-                                    首页</span></a></li>
-                        <li><a href="/xydt/">新闻资讯</a></li>
-                        <li><a href="/xydt/">学院动态</a></li>
+                        <li><a href="/"><i class="fa fa-home"></i><span>首页</span></a></li>
+                        <li><a href="#"><%=current_category.name%></a></li>
                     </ul>
-
-
-
-
                 </div>
             </div>
             <ul class="news-list">
-                <% list.forEach(item => {%> 
-                <li>
-                    <div class="title">
-                        <a href="/article/details?id=<%=item.id%>" title="<%=item.name%>"><%=item.title%></a>
-                    </div>
-                    <div class="introduct text-gray">
-                        <%=item.description%>
-                    </div>
-                    <div class="date text-grayDark"><%=item.time%></div>
-                </li>
-                <%}) %>
-
+                <% if (list.length > 0) { %>
+                    <% list.forEach(item => { %>
+                        <li>
+                            <div class="title">
+                                <a href="/article/details?id=<%=item.id%>" title="<%=item.name%>">
+                                    <%=item.title%>
+                                </a>
+                            </div>
+                            <div class="introduct text-gray">
+                                <%=item.description%>
+                            </div>
+                            <div class="date text-grayDark">
+                                <%=item.time%>
+                            </div>
+                        </li>
+                    <% }) %>
+                <% } else { %>
+                    <div class="no-data">暂无数据</div>
+                <% } %>
             </ul>
 
             <div class="text-center padding-20">

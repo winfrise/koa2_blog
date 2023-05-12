@@ -14,35 +14,43 @@ exports.home = async ctx => {
 
 exports.categoryList = async ctx => {
     const menus = await sqlApi.selectMenus()
-    const menusTree = arrayToTree(menus, 0)
+    const menus_tree = arrayToTree(menus, 0)
 
-    let pageSize = 10
-    let currentPage = 1
-    const { id, page_size, current_page } = ctx.request.query
-    page_size && (pageSize = page_size)
-    current_page && (currentPage = current_page)
+    const { id, page_size = 10, current_page = 1 } = ctx.request.query
 
+    // 当前分类信息
+    const [current_category] = await sqlApi.findCategoryById(id)
 
-    const result = await sqlApi.selectChildCategoryById({page_size: pageSize, current_page: currentPage, id})
-    await ctx.render(`index/${template}/category/list`, { template, menus:menusTree, list: result })
+    // 子类
+    const child_categories = await sqlApi.selectChildCategoryByParentId({ page_size, current_page, parent_id: id })
+    
+    // 所有文章
+    const articles = await sqlApi.selectArticleByCategoryIds({ page_size, current_page, category_ids: [...child_categories.map(item => item.id)] })
+    await ctx.render(`index/${template}/category/list`, { template, menus: menus_tree, child_categories, articles, current_category })
 }
-
+/**
+ * 文单列表
+ * @param {*} ctx.query.id 文章分类列表
+ * @param {*} ctx.query.page_size 每页显示数量
+ * @param {*} ctx.query.current_page 当前页码
+ */
 exports.articleList = async ctx => {
     const menus = await sqlApi.selectMenus()
-    const menusTree = arrayToTree(menus, 0)
+    const menus_tree = arrayToTree(menus, 0)
 
-    let currentPage = 1
-    let pageSize = 10
-    const { id, page_size, current_page } = ctx.request.query
+    let { id, page_size = 10, current_page = 1 } = ctx.request.query
 
-    if (current_page) currentPage = current_page
-    if (page_size) pageSize = page_size
-
-    let list = await sqlApi.selectArticles({ category_id: id, current_page: currentPage, page_size: pageSize })
+    // 当前分类下的文章列表
+    let list = await sqlApi.selectArticles({ category_id: id, current_page, page_size })
     list = list.map(item => {
         return { ...item, time: dayjs(item.update_time * 1000 || item.create_time * 1000).format('YYYY-MM-DD HH:mm:ss')}
     })
-    await ctx.render(`index/${template}/article/list`, { template, menus:menusTree, list: list })
+
+    // 当前分类的兄弟分类
+    const [current_category] = await sqlApi.findCategoryById(id)
+    const sibling_categories = await sqlApi.selectChildCategoryByParentId({ parent_id: current_category.parent_id})
+
+    await ctx.render(`index/${template}/article/list`, { template, menus: menus_tree, list: list, sibling_categories, current_category })
 }
 
 exports.articleDetails = async ctx => {

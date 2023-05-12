@@ -16,8 +16,11 @@ exports.selectCategories = () => {
     return query(_sql)
 }
 
-exports.selectChildCategoryById = ({page_size, current_page,  id}) => {
-    let _sql = `select * from le_category where parent_id=${id} order by id desc limit ${(current_page - 1) * page_size},${page_size} `
+exports.selectChildCategoryByParentId = ({ page_size, current_page, parent_id }) => {
+    let _sql = `select * from le_category where parent_id=${parent_id} order by id desc`
+    if (page_size && current_page) {
+        _sql += ` limit ${(current_page - 1) * page_size},${page_size} `
+    }
     return query(_sql)
 }
 
@@ -66,6 +69,17 @@ exports.selectModels = () => {
 // 查询文章列表
 exports.selectArticles = ({ current_page, page_size, category_id }) => {
     let _sql = `select * from le_article ${ category_id ? 'where category_id=' + category_id : ''} order by id desc limit ${(current_page - 1) * page_size},${page_size} ;`
+    return query(_sql)
+}
+
+
+exports.selectArticleByCategoryIds = ({ current_page, page_size, category_ids }) => {
+    let _sql = `select * from le_article where category_id in (${category_ids}) order by id desc`
+
+    if (current_page && page_size) {
+      _sql += ` limit ${ (current_page - 1) * page_size },${ page_size }`
+    }
+    console.log(_sql)
     return query(_sql)
 }
 
