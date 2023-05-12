@@ -1,6 +1,6 @@
 
 
-const { selectCategorys, selectModels, findUserByUsername, selectArticles } = require('../../lib/db-utils.js')
+const { selectModels, findUserByUsername, selectArticles } = require('../../lib/db-utils.js')
 const sqlApi = require('../../lib/db-utils.js')
 const getFolderFiles = require('../../plugins/getFolderFiles.js')
 const path = require('path')
@@ -40,7 +40,7 @@ exports.menuListGet = async ctx => {
 }
 
 exports.categoryListGet = async ctx => {
-    const result = await selectCategorys()
+    const result = await sqlApi.selectCategories()
     const tree = arrayToTree(result, 0)
 
     ctx.body = {
