@@ -1,0 +1,220 @@
+<div class="header clearfix combox-shadow">
+    <div class="container position-relative">
+        <div class="row">
+            <div class="float-md-left">
+                <a class="logo" href="http://t1114.mbdemo.18inter.com/">
+                    <img src="/upload/Images/2019/12/31/0928246260.png" />
+                </a>
+            </div>
+            <div class="float-md-right">
+
+                <span id="search-button" class="search-button float-right">
+                    <i class="iconfont icon-search font-size-24"></i>
+                </span>
+
+                <div class="nav text-right float-md-right" id="navMenu">
+                    <ul>
+                        <li><a href="/">首页</a></li>
+                        <% menus.forEach(item => { %>
+                        <li><a href="<%= (item.type == 1 ? '/category/list' : item.type == 2 ? '/article/list' : '/page/index') %>?id=<%=item.id%>"><%=item.name%></a>
+                            <% if (item.children) { %> 
+                            <ul>
+                                <% item.children.forEach(childItem => { %>
+                                    <li><a href="<%= (childItem.type == 1 ? '/category/list' : childItem.type == 2 ? '/article/list' : '/page/index') %>?id=<%=childItem.id%>"><%=childItem.name%></a></li>
+                                <% }) %>
+
+                            </ul>
+                            <%} %>
+                        </li>
+                        <% }) %>
+
+                    </ul>
+
+                    <div class="login padding-10 hidden-md visible-sm visible-xs" style="min-height:178px;">
+                        <script src="/Js/basic.js" type="text/javascript"></script>
+                        <script src="/Js/UI/ui.js" type="text/javascript"></script>
+                        <form class="forms-sample" method="post" id="loginForm" data-validate-params="tipsStyle:0"
+                            autocomplete="off">
+
+                            <div id="aside_about" class="widget_aside_about">
+                                <img class="bg" src="/Templates/t1114/images/a.jpg">
+                                <div class="avatar"><img class="img" src="/Templates/t1114/images/head.jpg" /></div>
+                                <div class="wrap pd">
+                                    <p class="title">未登录</p>
+                                    <p class="info text-left">
+                                        欢迎注册登录，加入我们。为企业提供账号策划、开通蓝v认证、账号运营、店铺管理培训、内容创作拍摄、视频整合营销的等全栈式运营培训服务。 </p>
+                                </div>
+
+                                <ul>
+                                    <li class="form-group loginbox_item">
+                                        <input placeholder="用户名" type="text" name="username" id="username"
+                                            class="loginbox_textbox form-control"
+                                            style="width:90%;margin:10px auto;display:block;line-height:2;padding-left:6px;"
+                                            data-validate="dataType:'*',nullMsg:'请填写登录账号'" maxlength="16">
+                                    </li>
+                                    <li class="loginbox_item form-group ">
+                                        <input placeholder="密  码" type="password" name="password" id="username"
+                                            class="loginbox_textbox form-control "
+                                            style="width:90%;margin:10px auto;display:block;line-height:2;padding-left:6px;"
+                                            maxlength="16">
+                                    </li>
+                                    <li class="loginbox_item form-group clearfix">
+                                        <input name="__RequestVerificationToken" type="hidden"
+                                            value="GDoGXs-3H0tLAApyi0AlN8-tNiLKtLQMRrW2FHjwq_7kcQssbe2s_Dg4tYkW_tS2rq1jHXQxJnNDnliG0bL5pcEMWPHOoV1gdz39Y71uqB01" />
+                                        <button type="button"
+                                            class="loginbox_submit ui-pagePost btn btn-primary col-xs-offset-1 col-xs-4"
+                                            data-custom-params="url:'/member/Login/',callBack:'LoginSuccess',failCallBack:'FailCallBack',successMsg:''">登录</button>
+                                        <a class="logined_href loginbox_submit btn btn-success col-xs-offset-1 col-xs-5"
+                                            href="/member/Reg/" target="_blank">注册会员</a>
+                                        <a class="logined_href " href="/member/FindPassword/" target="_blank"
+                                            style="color:#333;line-height:22px;padding:3px;display:none;">忘记密码</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </form>
+
+
+                        <script type="text/javascript">
+                            var $form = $("#loginForm");
+                            var $verificationCode = $("#_VerificationCode");
+                            var $loginBox = $("#LoginBox");
+                            //保存登录信息到本地
+                            function SaveInfo() {
+                                if ($("#cookies").prop("checked")) {
+                                    var serializerStr = $form.SerializeJson();
+                                    serializerStr = JsonToString(serializerStr);
+                                    SetLocalStorage("LoginUserInfo", serializerStr);
+                                }
+                                else {
+                                    RemoveLocalStorage("LoginUserInfo");
+                                }
+                            }
+                            function LoginSuccess() {
+                                layer.msg('登录成功...', {
+                                    icon: 16,
+                                    time: 200000, //200秒
+                                    shade: 0.01
+                                });
+                                SaveInfo();
+                                location.href = location.href;
+                            }
+                            var $tipsBox = $(".validate-all-tips-box");
+                            var $verificationCodeImg = $("#verificationCodeImg");
+
+                            function FailCallBack(data) {
+                                alert(data.Msg);
+                            }
+                            function Exit() {
+                                Msg("loading...")
+                                var url = "/member/Login/Exit/";
+                                var Data = Ajax({ type: "get", async: true, url: url }, function () {
+                                    location.href = location.href;
+                                });
+                            }
+                        </script>
+
+                    </div>
+                </div>
+
+
+            </div>
+
+            <div class="mask-bg" id="masgBg"></div>
+            <div class="mask-bg1"></div>
+
+            <span class="nav-toggle hidden-lg" id="navToggle"><i class="fa fa-bars"></i></span>
+            <div class="searchform clearfix hidden">
+                <input class="s-input float-left" type="text" placeholder="请输入关键词...">
+                <button class="s-button float-right " type="button">搜 索</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+    $("#search-button").click(function () {
+        $("#search-button i").toggleClass("icon-close");
+        $("#search-button i").toggleClass("icon-search");
+        $(".mask-bg1").toggleClass("active");
+        $(".searchform").toggleClass("hidden");
+    });
+    $(".mask-bg1").click(function () {
+        $(".searchform").addClass("hidden");
+        $("#search-button i").toggleClass("icon-close");
+        $("#search-button i").toggleClass("icon-search");
+        $(".mask-bg1").removeClass("active");
+    })
+
+    var ssval = "";
+    $(".s-button").on("click", function () {
+        ssval = $(".s-input").val();
+        if (ssval != "") {
+            location.href = "/ss/?kw=" + $(".s-input").val();
+        }
+    });
+    $(".s-input").on("keydown", function (event) {
+        ssval = $(".s-input").val();
+        if (ssval != "") {
+            var key = event.which;
+            if (key == 13) {
+                location.href = "/ss/?kw=" + $(".s-input").val();
+            }
+        }
+    });
+    $(function () {
+        var nav = $(".header"); //得到导航对象
+        var win = $(window); //得到窗口对象
+        var sc = $(document);//得到document文档对象。
+        win.scroll(function () {
+            if (sc.scrollTop() >= 100) {
+                nav.addClass("fixednav");
+            } else {
+                nav.removeClass("fixednav");
+            }
+        })
+    })
+
+    $(".nav li[data-id='22']").addClass("active");
+    var $li = $(".nav li");
+    $li.mouseenter(function () {
+        $(".nav li[data-id='22']").removeClass("active");
+        $this = $(this);
+        $this.addClass("active").siblings("li").removeClass("active");
+    });
+    $li.mouseleave(function () {
+        $this = $(this);
+        $this.removeClass("active");
+        $(".nav li[data-id='22']").addClass("active");
+    });
+    var topcolumId = "22";
+    var $navToggle = $("#navToggle");
+    var $navMenu = $("#navMenu");
+    var $navItem = $navMenu.find("li");
+    var $masgBg = $("#masgBg");
+    $navToggle.on("click", function () {
+        $masgBg.addClass("active");
+        $navMenu.addClass("active");
+    });
+    $masgBg.on("click", function () {
+        $masgBg.removeClass("active");
+        $navMenu.removeClass("active");
+
+    });
+    $navItem.each(function () {
+        var $this = $(this);
+        if ($this.attr("data-id") == topcolumId) {
+            $this.addClass("active");
+        }
+        if ($this.children("ul").length > 0) {
+            $this.append('<span class="arrow"></span>');
+        }
+    });
+    $navItem.find(".arrow").on("click", function () {
+        var $this = $(this);
+        $this.toggleClass("active");
+        $this.siblings("ul").toggleClass("active");
+    });
+</script>

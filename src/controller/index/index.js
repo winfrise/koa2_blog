@@ -2,8 +2,8 @@ const dayjs = require('dayjs')
 const sqlApi = require('../../lib/db-utils')
 const arrayToTree = require('../../plugins/arrayToTree.js')
 
-const templates = ['default', 'college']
-const template = templates[1]
+const templates = ['default', 'college', 'blog']
+const template = templates[2]
 
 
 exports.home = async ctx => {
