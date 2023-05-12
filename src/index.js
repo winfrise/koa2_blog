@@ -53,30 +53,10 @@ app.use(bodyParser({
 }))
 
 //  路由
-app.use(async (ctx, next) => {
-  // //console.log(ctx.request.header.host);
-  // var pathname = url.parse(ctx.request.url).pathname;
 
-  // //导航条的数据
-  // var navResult = await DB.find('nav', { $or: [{ 'status': 1 }, { 'status': '1' }] }, {}, {
-
-  //   sortJson: { 'sort': 1 }
-  // })
-  //模板引擎配置全局的变量
-  // ctx.state.nav = navResult;
-  // ctx.state.dayjs = pathname;
-
-  await next()
-})
 app.use(indexRouter.routes())
 app.use(apiRouter.routes())
 app.use(adminRouter.routes())
-
-app.use(require('./routers/signin.js').routes())
-app.use(require('./routers/signup.js').routes())
-app.use(require('./routers/posts.js').routes())
-app.use(require('./routers/signout.js').routes())
-
 
 app.listen(config.port)
 

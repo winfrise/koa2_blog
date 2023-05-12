@@ -1,6 +1,8 @@
 # Koa2-blog
 node+koa2+mysql
 
+参考：https://github.com/xiejunping/wapman-admin
+
 > 现在最新的代码有变动，请参照最新的代码，新增了上传头像、分页、markdown语法等
 
 

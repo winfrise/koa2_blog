@@ -31,11 +31,6 @@
         if (Cookies.get('token')) {
             window.location.href = "/admin/index"
         }
-        $(window).keyup(function (e) {
-            if (e.keyCode == 13) {
-                $('.submit').click()
-            }
-        })
         $('.submit').click(function () {
             if ($('input[name=username]').val().trim() == '' || $('input[name=password]').val().trim() == '') {
                 return layui.layer.msg('请输入用户名或密码')

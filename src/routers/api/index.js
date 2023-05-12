@@ -8,30 +8,30 @@ router.post('/login', ApiController.login)
 
 router.post('/menu/list/get', ApiController.menuListGet)
 
-router.post('/category/list/get', ApiController.categoryListGet)
-router.post('/category/add', ApiController.categoryAdd)
-router.post('/category/find', ApiController.categoryFind)
-router.post('/category/delete', ApiController.categoryDelete)
-router.post('/category/update', ApiController.categoryUpdate)
+// router.post('/category/list/get', ApiController.categoryListGet)
+// router.post('/category/add', ApiController.categoryAdd)
+// router.post('/category/find', ApiController.categoryFind)
+// router.post('/category/delete', ApiController.categoryDelete)
+// router.post('/category/update', ApiController.categoryUpdate)
 
-router.post('/models/list/get', ApiController.modelsListGet)
+// router.post('/models/list/get', ApiController.modelsListGet)
 
-router.post('/article/list/get', ApiController.articleListGet)
-router.post('/article/insert', ApiController.articleInsert)
+// router.post('/article/list/get', ApiController.articleListGet)
+// router.post('/article/insert', ApiController.articleInsert)
 
-router.post('/uploads/list/get', ApiController.uploadsListGet)
-/**
- * 资源管理
- */
-router.post('/resource/list/get', ApiController.resourceListGet)
-router.post('/resource/details/get', ApiController.resourceDetailsGet)
-router.post('/resource/details/update', ApiController.resourceDetailsUpdate)
+// router.post('/uploads/list/get', ApiController.uploadsListGet)
+// /**
+//  * 资源管理
+//  */
+// router.post('/resource/list/get', ApiController.resourceListGet)
+// router.post('/resource/details/get', ApiController.resourceDetailsGet)
+// router.post('/resource/details/update', ApiController.resourceDetailsUpdate)
 
-/**
- * 上传
- */
-router.post('/upload/single', upload.single('file'),ApiController.uploadSingle);
-router.post('/upload/batch', ApiController.uploadBatch);
-router.post('/upload/temporary/get', ApiController.uploadTemporaryGet)
+// /**
+//  * 上传
+//  */
+// router.post('/upload/single', upload.single('file'),ApiController.uploadSingle);
+// router.post('/upload/batch', ApiController.uploadBatch);
+// router.post('/upload/temporary/get', ApiController.uploadTemporaryGet)
 
 module.exports = router
