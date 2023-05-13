@@ -40,7 +40,7 @@ app.use(session({
 app.use(staticCache(path.join(__dirname, './public'), { dynamic: true }, {
   maxAge: 365 * 24 * 60 * 60
 }))
-app.use(staticCache(path.join(__dirname, './images'), { dynamic: true }, {
+app.use(staticCache(path.join(__dirname, '../upload'), { dynamic: true }, {
   maxAge: 365 * 24 * 60 * 60
 }))
 
