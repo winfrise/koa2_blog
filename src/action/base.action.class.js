@@ -91,6 +91,31 @@ class BaseAction {
   async query (sql) {
     return await this.Model.query(sql)
   }
+  /**
+   * 获取分页列表
+   * @param {*} pageNum 
+   * @param {*} pageSize 
+   * @returns 
+   */
+  async getPageList (pageNum, pageSize) {
+    const info = {
+        whereJson: {
+        //   and: {gid}
+        },
+        orderByJson: {
+            type: 'desc',
+            key: 'id'
+        },
+        limitArr: [
+            (pageNum - 1) * pageSize, pageSize
+        ]
+        
+    }
+    const list = await this.Model.fetchAll(info)
+    const {count} = await this.Model.count()
+
+    return { list, count}
+}
 }
 
 module.exports = BaseAction

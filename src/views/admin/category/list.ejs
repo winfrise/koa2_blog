@@ -77,11 +77,11 @@
                     </template>
                 </el-table-column>
 
-                <el-table-column label="操作">
+                <el-table-column label="操作"  fixed="right">
                     <template v-slot="scope">
                         <el-button type="primary" plain><a :href="`/admin/category/add?id=${scope.row.id}`">编辑</a></el-button>
                         <el-button type="danger" plain :disabled="scope.row.children" @click="handleDelete(scope.row)">删除</el-button>
-                        <el-button type="warning" plain v-if="scope.row.type === 1"><a :href="`/admin/category/add?parent_id=${scope.row.id}`">添加子分类</a></el-button>
+                        <el-button type="warning" plain v-if="[1, 2].includes(scope.row.type)"><a :href="`/admin/category/add?parent_id=${scope.row.id}`">添加子分类</a></el-button>
                         <el-button type="info" plain v-else><a :href="`/admin/article/add?category_id=${scope.row.id}`">添加文章</a></el-button>
                     </template>
                 </el-table-column>

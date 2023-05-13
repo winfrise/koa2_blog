@@ -6,6 +6,8 @@ const arrayToTree = require('../../plugins/arrayToTree.js')
 const adminAction = require('../../action/admin.action.js')
 const modelAction = require('../../action/model.action.js')
 const categoryAction = require('../../action/category.action.js')
+const resourceAction = require('../../action/resource.action.js')
+const articleAction = require('../../action/article.action.js')
 
 exports.login = async ctx => {
     let { username, password } = ctx.request.body
@@ -55,14 +57,13 @@ exports.categoryTree = async ctx => {
 
 exports.categoryAdd = async ctx => {
     const { id, type, name, description, sort, is_menu, parent_id, model_id } = ctx.request.body
-    const data = { type, name, description, sort, is_menu, parent_id, model_id, id }
+    const rowInfo = { type, name, description, sort, is_menu, parent_id, model_id }
     const now_time = Math.ceil(Date.now() / 1000)
     try {
         if (id) {
-            await categoryAction.edit({ ...data, update_time: now_time })
+            await categoryAction.edit({id }, rowInfo)
         } else {
-            delete data.id
-            await categoryAction.add({ ...data, create_time: now_time, update_time: now_time })
+            await categoryAction.add({ ...rowInfo, create_time: now_time, update_time: now_time })
         }
         ctx.body = {
             code: 200,
@@ -137,19 +138,19 @@ exports.modelsListGet = async ctx => {
     }
 }
 
-// // 获取文章列表
-// exports.articleListGet = async ctx => {
-//     const { currentPage, pageSize } = ctx.request.body
-//     const result = await selectArticles({ currentPage, pageSize })
-//     ctx.body = {
-//         code: 200,
-//         message: '成功',
-//         data: {
-//             list: result,
-//             total: 0
-//         }
-//     }
-// }
+// 获取文章列表
+exports.articleListGet = async ctx => {
+    const { currentPage, pageSize } = ctx.request.body
+    const result = await articleAction.getPageList(currentPage, pageSize)
+    ctx.body = {
+        code: 200,
+        message: '成功',
+        data: {
+            list: result,
+            total: 0
+        }
+    }
+}
 // // 插入文章
 // exports.articleInsert = async ctx => {
 //     const data = ctx.request.body
@@ -178,19 +179,20 @@ exports.modelsListGet = async ctx => {
 //     }
 // }
 
-// // 获取资源列表
-// exports.resourceListGet = async ctx => {
-//     const {currentPage, pageSize} = ctx.request.body
-//     const [listRes, countRes] = await Promise.all([sqlApi.selectResource({ currentPage, pageSize }), sqlApi.getResourceCount()])
-//     ctx.body = {
-//         code: 200,
-//         message: '成功',
-//         data: {
-//             list: listRes,
-//             total: countRes[0].count
-//         }
-//     }
-// }
+// 获取资源列表
+exports.resourceListGet = async ctx => {
+    const {currentPage, pageSize} = ctx.request.body
+    const result = await resourceAction.getPageList(currentPage, pageSize)
+   
+    ctx.body = {
+        code: 200,
+        message: '成功',
+        data: {
+            list: result.list,
+            total:result.count
+        }
+    }
+}
 // // 资源详情
 // exports.resourceDetailsGet = async ctx => {
 //     const { id } = ctx.request.body

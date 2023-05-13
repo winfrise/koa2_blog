@@ -152,7 +152,7 @@
                         cache: false,
                         dataType: 'json',
                         success: function (res) {
-                            if (res.code !== 200) return
+                            if (res.code !== 200) return ElementPlus.ElMessage.error(err.msg)
                             ElementPlus.ElMessage.success('更新成功')
                             location.href="/admin/category/list"
                         },

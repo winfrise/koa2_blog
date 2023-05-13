@@ -141,7 +141,7 @@ class DB {
     count(idJson) {
       const { tableName, pool } = this
       return new Promise((resolve, reject) => {
-        const sqlMod = `SELECT COUNT(*) as count FROM ${tableName} WHERE ?`
+        const sqlMod = `SELECT COUNT(*) as count FROM ${tableName} ${idJson ? 'WHERE ?' : ''}`
         pool.query(sqlMod, idJson, function (error, result) {
           if (error) reject(error)
           else resolve(result.pop())
@@ -176,30 +176,40 @@ class DB {
      * @param selectStr
      * @returns {Promise<any>}
      */
-    fetchAll(tableName, selectStr, whereJson, orderByJson = '', limitArr = '') {
+    fetchAll({selectStr = '*', whereJson, orderByJson = '', limitArr = ''}) {
+      const { tableName, pool } = this
       const andWhere = whereJson['and']
       const orWhere = whereJson['or']
       const betArr = whereJson['between']
-      const andArr = []
-      const orArr = []
+
+      let whereStr = ''
+      if (andWhere || orWhere || betArr) {
+        const andArr = []
+        const orArr = []
+    
+        if (andWhere) {
+          for(const key in andWhere) {
+            const snap = typeof andWhere[key] === 'string' ? '\"' : ''
+            andArr.push(`\`${key}\` = ${snap}${andWhere[key]}${snap}`)
+          }
+        }
   
-      for(const key in andWhere) {
-        const snap = typeof andWhere[key] === 'string' ? '\"' : ''
-        andArr.push(`\`${key}\` = ${snap}${andWhere[key]}${snap}`)
+        if  (orWhere) {
+          for(const key in orWhere) {
+            const snap = typeof andWhere[key] === 'string' ? '\"' : ''
+            orArr.push(`\`${key}\` = ${snap}${orWhere[key]}${snap}`)
+          }
+        }
+        const andStr = andArr.length > 0 ? andArr.join(' and ') : ''
+        const orStr = orArr > 0 ? orArr.join(' or ') : ''
+        const betStr = betArr > 0 ? `AND ${betArr[0]} BETWEEN ${betArr[1]} AND ${betArr[2]}` : ''
+        whereStr = (andStr || orStr || betStr) ? ` WHERE ${andStr} ${orStr} ${betStr} ` : ''
       }
-      for(const key in orWhere) {
-        const snap = typeof andWhere[key] === 'string' ? '\"' : ''
-        orArr.push(`\`${key}\` = ${snap}${orWhere[key]}${snap}`)
-      }
-  
-      const andStr = andArr.join(' and ')
-      const orStr = orArr.join(' or ')
-      const betStr = betArr ? `AND ${betArr[0]} BETWEEN ${betArr[1]} AND ${betArr[2]}` : ''
+
   
       const orderStr = orderByJson['type'] ? `order by ${orderByJson['key']} ${orderByJson['type']}` : ''
       const limitStr = limitArr.length > 0 ? `limit ${limitArr.join(',')}` : ''
-      const sqlMod = `SELECT ${selectStr} FROM ${tableName} WHERE ${andStr} ${orStr} ${betStr} ${orderStr} ${limitStr}`
-  
+      const sqlMod = `SELECT ${selectStr} FROM ${tableName} ${whereStr} ${orderStr} ${limitStr}`
       return new Promise((resolve, reject) => {
         pool.query(sqlMod, function (error, results) {
           if (error) {
