@@ -193,30 +193,33 @@ exports.resourceListGet = async ctx => {
         }
     }
 }
-// // 资源详情
-// exports.resourceDetailsGet = async ctx => {
-//     const { id } = ctx.request.body
-//     const result = await sqlApi.findResourceById(id)
-//     ctx.body = {
-//         code: 200,
-//         message: '成功',
-//         data: {
-//             details: result[0]
-//         }
-//     }
-// }
+// 资源详情
+exports.resourceDetailsGet = async ctx => {
+    const { id } = ctx.request.body
+    const result = await resourceAction.getRow({id})
+    ctx.body = {
+        code: 200,
+        message: '成功',
+        data: {
+            details: result
+        }
+    }
+}
 
-// // 更新资源
-// exports.resourceDetailsUpdate = async ctx => {
-//     const { id, name, status } = ctx.request.body
-//     await sqlApi.updateResourceById({ id, name, status })
+// 更新资源
+exports.resourceDetailsUpdate = async ctx => {
+    const { id, name, status } = ctx.request.body
+    const rowJson = {}
+    if (name) rowJson.name  = name
+    if (status) rowJson.status = status
+    await resourceAction.edit({ id}, rowJson)
     
-//     ctx.body = {
-//         code: 200,
-//         message: '成功',
-//         data: {}
-//     }
-// }
+    ctx.body = {
+        code: 200,
+        message: '成功',
+        data: {}
+    }
+}
 
 // 获取批量上传列表
 exports.uploadTemporaryGet = async ctx => {

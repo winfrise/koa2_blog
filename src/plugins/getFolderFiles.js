@@ -15,7 +15,8 @@ function getFolderFiles(root) {
                 const matches = item.match(/([\w\.-]+)\.(\w+)$/)
                 if (matches) {
                     result.push({
-                        file_path: fullPath.split('\\upload-temp\\')[1],
+                        // full_path: fullPath,
+                        file_path: fullPath.split('upload-temp')[1],
                         filename: item,
                         suffix: matches[2],
                         name: matches[1],

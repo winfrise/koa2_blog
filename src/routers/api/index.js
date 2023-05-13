@@ -24,8 +24,8 @@ router.post('/article/list/get', ApiController.articleListGet)
 //  * 资源管理
 //  */
 router.post('/resource/list/get', ApiController.resourceListGet)
-// router.post('/resource/details/get', ApiController.resourceDetailsGet)
-// router.post('/resource/details/update', ApiController.resourceDetailsUpdate)
+router.post('/resource/details/get', ApiController.resourceDetailsGet)
+router.post('/resource/details/update', ApiController.resourceDetailsUpdate)
 
 // /**
 //  * 上传
