@@ -31,7 +31,7 @@ router.post('/resource/list/get', ApiController.resourceListGet)
 //  * 上传
 //  */
 // router.post('/upload/single', upload.single('file'),ApiController.uploadSingle);
-// router.post('/upload/batch', ApiController.uploadBatch);
-// router.post('/upload/temporary/get', ApiController.uploadTemporaryGet)
+router.post('/upload/batch', ApiController.uploadBatch);
+router.post('/upload/temporary/get', ApiController.uploadTemporaryGet)
 
 module.exports = router

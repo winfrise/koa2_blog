@@ -115,7 +115,19 @@ class BaseAction {
     const {count} = await this.Model.count()
 
     return { list, count}
-}
+  }
+  async batchAdd (list) {
+    return new Promise(( resolve, reject ) => {
+      list.forEach(async item => {
+          const create_time = Math.ceil(Date.now() / 1000)
+          // const values = [item.name, item.file_size, currentTime,item.filename, item.file_path, item.suffix]
+          // let _sql = `insert into le_resource set name=?,file_size=?, create_time=?,filename=?,file_path=?,suffix=?;`
+          await this.add({...item, create_time})
+          // await query( _sql, values )
+      })
+      resolve()
+  })
+  }
 }
 
 module.exports = BaseAction

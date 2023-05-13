@@ -218,20 +218,20 @@ exports.resourceListGet = async ctx => {
 //     }
 // }
 
-// // 获取批量上传列表
-// exports.uploadTemporaryGet = async ctx => {
-//     const uploadTempPath = path.resolve(__dirname, '../../../upload-temp')
-//     const files = getFolderFiles(uploadTempPath)
-//     const lock = fs.existsSync(uploadTempPath + '/.lock')
-//     ctx.body = {
-//         code: 200,
-//         message: '成功',
-//         data: {
-//             list: files,
-//             lock
-//         }
-//     }
-// }
+// 获取批量上传列表
+exports.uploadTemporaryGet = async ctx => {
+    const uploadTempPath = path.resolve(__dirname, '../../../upload-temp')
+    const files = getFolderFiles(uploadTempPath)
+    const lock = fs.existsSync(uploadTempPath + '/.lock')
+    ctx.body = {
+        code: 200,
+        message: '成功',
+        data: {
+            list: files,
+            lock
+        }
+    }
+}
 
 // /**
 //  * 上传单个文件
@@ -246,27 +246,26 @@ exports.resourceListGet = async ctx => {
 //     }
 // }
 
-// // 批量上传，需要手动上传文件
-// exports.uploadBatch = async ctx  => {
-//     const { fileList } = ctx.request.body
+// 批量上传，需要手动上传文件
+exports.uploadBatch = async ctx  => {
+    const { fileList } = ctx.request.body
     
-//     const uploadTempPath = path.resolve(__dirname, '../../../upload-temp')
-//     if (fs.existsSync(uploadTempPath + '/.lock')) {
-//         ctx.body = {
-//             code: 5002,
-//             message: '请删除锁定的文件后再上传',
-//             data: {}
-//         }
-//         return
-//     }
+    const uploadTempPath = path.resolve(__dirname, '../../../upload-temp')
+    if (fs.existsSync(uploadTempPath + '/.lock')) {
+        ctx.body = {
+            code: 5002,
+            message: '请删除锁定的文件后再上传',
+            data: {}
+        }
+        return
+    }
+    await resourceAction.batchAdd(fileList)
+    fs.writeFileSync(uploadTempPath + '/.lock', '')
+    ctx.body = {
+        code: 200,
+        message: '成功',
+        data: {
 
-//     await sqlApi.insertResource(fileList)
-//     fs.writeFileSync(uploadTempPath + '/.lock', '')
-//     ctx.body = {
-//         code: 200,
-//         message: '成功',
-//         data: {
-
-//         }
-//     }
-// }
+        }
+    }
+}
