@@ -10,7 +10,12 @@ class CategoryAction extends BaseAction {
     }
     async getTree () {
         const rows = await this.getAll()
-        return arrayToTree(rows)
+        return arrayToTree(rows).sort((a, b) => {
+            if (b.sort === a.sort) {
+                return b.id - a.id
+            }
+            return b.sort - a.sort
+        })
     }
 }
 

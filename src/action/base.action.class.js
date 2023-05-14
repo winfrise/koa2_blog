@@ -36,7 +36,7 @@ class BaseAction {
    * @returns {Promise<void>}
    */
   async del (id) {
-    return await this.Model.delete(id)
+    return await this.Model.remove({id})
   }
 
   /**

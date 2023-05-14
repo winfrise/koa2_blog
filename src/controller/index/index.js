@@ -3,7 +3,7 @@ const sqlApi = require('../../lib/db-utils')
 const arrayToTree = require('../../plugins/arrayToTree.js')
 
 const templates = ['default', 'college', 'blog']
-const template = templates[2]
+const template = templates[1]
 
 
 exports.home = async ctx => {

@@ -100,16 +100,16 @@ exports.categoryFind = async ctx => {
     }
 } 
 
-// exports.categoryDelete = async ctx => {
-//     const { id } = ctx.request.body
-//     await sqlApi.deleteCategoryById(id)
+exports.categoryDelete = async ctx => {
+    const { id } = ctx.request.body
+    await categoryAction.del(id)
 
-//     ctx.body = {
-//         code: 200,
-//         message: '成功',
-//         data: {}
-//     }
-// }
+    ctx.body = {
+        code: 200,
+        message: '成功',
+        data: {}
+    }
+}
 
 exports.categoryUpdate = async ctx => {
     const { id, is_menu, sort } = ctx.request.body
